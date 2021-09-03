@@ -1,3 +1,3 @@
 # cpsc362-group5-musicapp
 
-Hi
+<<<<<<< HEAD hello! hello! hello!hello! gg
