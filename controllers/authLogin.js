@@ -6,18 +6,16 @@ exports.login = (req, res) => {
     console.log(req.body);
 
     // destructuring in JS
-    var {email, password} = req.body;
-    db.query('SELECT email, password FROM user W HERE email = ? AND password = ?' [email], [password],
+    const {email, password} = req.body;
+    db.query('SELECT email, password FROM user W HERE email = ? AND password = ?' [email], [bcrypt.hashSync(password,8)],
     async (error, result) =>{
         if (error){
             console.log(error);
         }
-        //string > number
+        //string > number 
         if(result > 0){
-            return res.send(result);
+            console.log("Successfully logged in");
+            return res.send(email,hashPassword);
         }
-        let hashedPassword = await bcrypt.hash(password, 8);
-        console.log(hashedPassword);
-        console.log(email, result);
     });
 }
