@@ -6,7 +6,7 @@ exports.signup = (req, res) => {
     console.log(req.body);
 
     // destructuring in JS
-    const { email, password, passwordConfirm } = req.body;
+    const { username, email, password, passwordConfirm } = req.body;
 
     db.query('SELECT email FROM user WHERE email = ?', [email], 
     async (error, result) =>{
@@ -29,7 +29,7 @@ exports.signup = (req, res) => {
         console.log(hashedPassword);
 
         db.query('INSERT INTO user SET ?', 
-        { email: email, password: hashedPassword }, (error, result) =>{
+        {email: email, password: hashedPassword, username:username}, (error, result) =>{
             if(error){
                 console.log(error);
             } else {

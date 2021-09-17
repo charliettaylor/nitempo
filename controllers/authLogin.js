@@ -6,34 +6,18 @@ exports.login = (req, res) => {
     console.log(req.body);
 
     // destructuring in JS
-    const { email, password} = req.body;
-
-    db.query('SELECT email FROM user WHERE email = ?', [email], 
+    var {email, password} = req.body;
+    db.query('SELECT email, password FROM user W HERE email = ? AND password = ?' [email], [password],
     async (error, result) =>{
         if (error){
             console.log(error);
         }
-        
+        //string > number
         if(result > 0){
-            return res.render('signup', {
-                message: 'Email already in use'
-            });
+            return res.send(result);
         }
-
         let hashedPassword = await bcrypt.hash(password, 8);
         console.log(hashedPassword);
-
-        // signup
-        db.query('INSERT INTO user SET ?', 
-        { email: email, password: hashedPassword }, (error, result) =>{
-            if(error){
-                console.log(error);
-            } else {
-                console.log(result);
-                return res.render('signup', {
-                    message: 'User acount created!'
-                });
-            }
-        });
+        console.log(email, result);
     });
 }
