@@ -36,7 +36,7 @@ exports.login = (req, res) => {
                     httpOnly: true
                 };
 
-                res.cookie('jwt', token, cookieOptions);
+                res.cookie('login', token, cookieOptions);
                 res.status(200).redirect("/");
             }
         });
@@ -44,6 +44,15 @@ exports.login = (req, res) => {
     } catch (error) {
         console.log(error);
     }
+}
+
+exports.logout = (req, res) => {
+    res.cookie('login', 'logout', {
+        expires: new Date(Date.now() + 2),
+        httpOnly: true
+    });
+
+    res.status(200).redirect('/');
 }
 
 exports.signup = (req, res) => {
@@ -88,10 +97,10 @@ exports.signup = (req, res) => {
 
 exports.isLoggedIn = async (req, res, next) => {
     console.log(req.cookies);
-    if ( req.cookies.jwt ){
+    if ( req.cookies.login ){
         try {
             //1) verify the token
-            const decoded = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+            const decoded = await promisify(jwt.verify)(req.cookies.login, process.env.JWT_SECRET);
         
             //2) Check if the user still exists
             db.query('SELECT * FROM user WHERE userID = ?', [decoded.id],
