@@ -10,11 +10,16 @@
 </head>
 <body>
     <nav>
-        <h4>Node MySQL Setup</h4>
+        <h4>Nitempo</h4>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/signup">Sign Up</a></li>
+            {{#if user}}
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/auth/logout">Log Out</a></li>
+            {{else}}
+                <li><a href="/login">Login</a></li>
+                <li><a href="/signup">Sign Up</a></li>
+            {{/if}}
         </ul>
     </nav>
     

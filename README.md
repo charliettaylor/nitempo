@@ -1,13 +1,8 @@
-# cpsc362-group5-musicapp
+# Nitempo
 
+*A social platform built around around music*
 
-
-1223
-
-
-final test 
-
-1234
-
+> Add stuff here
+> When we have stuff to add
 
 [Markdown cheatsheet](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf)
