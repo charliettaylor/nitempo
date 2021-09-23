@@ -12,7 +12,7 @@
 
 <body>
 	<nav>
-        <h4>Node MySQL Setup</h4>
+        <h4>Nitempo</h4>
         <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/login">Login</a></li>
@@ -20,10 +20,12 @@
         </ul>
     </nav>
 
-	 <div class="container">
+    <div class="container mt-4">
         <!-- Set HTTP method here in form tag -->
-            <h2 class="title">Login</h2>
-			<form action="/auth/login" method="POST"></form>
+        <form action="/auth/login" method="POST">
+            <img class="mb-4" src="./node.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 fw-normal">Login</h1>
+
             <div class="form-floating">
                 <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
                 <label for="floatingInput">Email address</label>
@@ -34,15 +36,11 @@
                 <label for="floatingPassword">Password</label>
             </div>
 
-			<div class="links">
-				<p><a href="#">Forgot Password?</a> Not a User? <a href="/signup">Sign Up</a> </p>
-			</div>
-
-			<a href="/"><button class="w-100 btn btn-lg btn-primary">Login</button></a>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
             <p class="mt-5 mb-3 text-muted">© 2021</p>
         </form>
-	</div>
-    <!--outputing message from sign up  -->
+    </div>
+
     {{#if message}}
      <h4 class="alert alert-danger mt-4">{{message}}</h4>
     {{/if}}

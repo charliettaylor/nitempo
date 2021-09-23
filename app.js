@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 var db = require('./db');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.static(publicDirectory));
 app.use(express.urlencoded({ extended: false }));
 // Parse JSON bodies
 app.use(express.json());
+app.use(cookieParser());
 
 app.set('view engine', 'hbs');
 
