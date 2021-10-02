@@ -1,8 +1,10 @@
 // Setup
 const express = require('express');
+const SpotifyWebApi = require('spotify-web-api-node');
 const path = require('path');
 var db = require('./db');
 const cookieParser = require('cookie-parser');
+const api = require('./controllers/api');
 
 const app = express();
 
@@ -24,3 +26,9 @@ app.use('/auth', require('./routes/auth'));
 app.listen(5000, () => {
     console.log('Server started on port 5000');
 });
+
+app.listen(8888, () =>
+  console.log(
+    'HTTP Server up. Now go to http://localhost:8888/login in your browser.'
+  )
+);

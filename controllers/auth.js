@@ -2,7 +2,7 @@ const db = require('../db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { promisify } = require('util');
-const e = require('express');
+
 
 exports.login = (req, res) => {
     try{

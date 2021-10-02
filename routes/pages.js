@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require("../controllers/auth");
 const router = express.Router();
+const apiController = require("../controllers/api");
 
 router.get('/', authController.isLoggedIn, (req, res) => {
     res.render('index', {
@@ -26,5 +27,7 @@ router.get('/profile', authController.isLoggedIn, (req, res) => {
         res.redirect('/login');
     }
 });
+
+router.get('/callback', apiController.callback);
 
 module.exports = router;
