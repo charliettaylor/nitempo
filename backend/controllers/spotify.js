@@ -1,11 +1,5 @@
-const fs = require('fs')
-const SpotifyWebApi = require('spotify-web-api-node');
-
-//
-const token = access_token;
-
-const spotifyApi = new SpotifyWebApi();
-spotifyApi.setAccessToken(token);
+const fs = require('fs');
+const spotifyApi = require('./api');
 
 //GET  PROFILE DATA
 function getMyData() {

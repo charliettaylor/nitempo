@@ -1,5 +1,5 @@
 const SpotifyWebApi = require('spotify-web-api-node');
-const db = require('../db');
+const db = require('./db');
 const express = require('express');
 const app = express();
 const { promisify } = require('util');
@@ -88,3 +88,5 @@ exports.callback = async (req, res) => {
         res.send(`Error getting Tokens: ${error}`);
     });
 }
+
+//module.exports = spotifyApi;

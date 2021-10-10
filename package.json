@@ -2,10 +2,10 @@
   "name": "LoginServer",
   "version": "1.0.0",
   "description": "Login setup for music list site",
-  "main": "app.js",
+  "main": "backend/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon backend/app.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -15,6 +15,7 @@
     "hbs": "^4.1.2",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
+    "mysql2": "^2.3.0",
     "nodemon": "^2.0.12",
     "react": "^17.0.2",
     "spotify-web-api-node": "^5.0.2"

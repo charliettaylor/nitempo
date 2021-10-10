@@ -1,6 +1,8 @@
-var mysql = require('mysql');
-var dotenv = require('dotenv');
-dotenv.config({ path: './.env'});
+var mysql = require('mysql2');
+const dotenv = require('dotenv');
+// dotenv is being stupid and won't take relative paths
+var path = require('path');
+dotenv.config({path: path.join(__dirname, '../.env')});
 
 // keep settings in local so everyone can setup their stuff indpendently
 const db = mysql.createConnection({

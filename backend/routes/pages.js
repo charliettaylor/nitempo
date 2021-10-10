@@ -9,12 +9,21 @@ router.get('/', authController.isLoggedIn, (req, res) => {
     });
 });
 
-router.get('/signup', (req, res) => {
-    res.render('signup');
+router.get('/signup', authController.isLoggedIn, (req, res) => {
+    if ( req.user ){
+        res.redirect('/profile');
+    } else {
+        res.render('signup');
+    }
 });
 
-router.get('/login', (req, res) => {
-    res.render('login');
+router.get('/login', authController.isLoggedIn, (req, res) => {
+    // redirects to profile if already signed in
+    if ( req.user ){
+        res.redirect('/profile');
+    } else {
+        res.render('login');
+    }
 });
 
 router.get('/profile', authController.isLoggedIn, (req, res) => {
