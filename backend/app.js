@@ -2,13 +2,14 @@
 const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
 const path = require('path');
-var db = require('./db');
+var db = require('./controllers/db');
 const cookieParser = require('cookie-parser');
 const api = require('./controllers/api');
 
+
 const app = express();
 
-const publicDirectory = path.join(__dirname, './public');
+const publicDirectory = path.join(__dirname, '../frontend/public');
 app.use(express.static(publicDirectory));
 
 // Parse URL-encoded bodies (as sent by forms)
@@ -18,6 +19,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, '../frontend/views'));
+app.set('public', path.join(__dirname, '../frontend/public'));
 
 // Define Routes
 app.use('/', require('./routes/pages'));
