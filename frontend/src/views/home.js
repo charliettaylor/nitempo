@@ -8,7 +8,7 @@ class home extends Component {
     state = {
         melodies: null
     }
-    componentDidMount(){
+    componentDidMount(){    //this is connected to the firebase database for now
         axios.get('/Melodies')
         .then(res => {
             this.setState({
@@ -19,7 +19,7 @@ class home extends Component {
     }
     render() {
         let recentMelodiesMarkup = this.state.melodies ? (
-            this.state.melodies.map(melody => <Melody melody={melody}/>)
+            this.state.melodies.map((melody) => <Melody key={melody.melodyId} melody={melody}/>)
         ) : <p>Loading...</p>
         return (
             <Grid container>
