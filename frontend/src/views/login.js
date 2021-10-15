@@ -10,25 +10,35 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const styles = {
     form: {
         textAlign: 'center'
-    },
-    Logo: {
-        margin: '20px auto 20px auto',
-        height: 100
-    },
-    pageTitle: {
-        margin: '10px auto 10px auto'
-    },
-    textField: {
-        backgroundColor: "#3D4363",
-        margin: '20px auto 20px auto',
-    },
-    button: {
-        margin: '20px 20px 20px 20px'
-    }
+      },
+      Logo: {
+          margin: '20px auto 20px auto',
+          height: 100
+      },
+      pageTitle: {
+          margin: '10px auto 10px auto'
+      },
+      textField: {
+          backgroundColor: "#3D4363",
+          margin: '20px auto 20px auto',
+      },
+      button: {
+          margin: '20px 20px 20px 20px',
+          position: 'relative'
+      },
+      customError: {
+          color: 'red',
+          fontSize: '0.8rem',
+          marginTop: 10
+      },
+      progress: {
+          position: 'absolute'
+      }
 }
 
 class login extends Component {
@@ -51,8 +61,9 @@ class login extends Component {
             password: this.state.password
         }
         axios.post('/login', userData)
-        .then(res => {
+        .then((res) => {
             console.log(res.data);
+            localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`)
             this.setState({
                 loading: false
             });
@@ -88,10 +99,14 @@ class login extends Component {
                         helperText={errors.password} error={errors.password ? true : false} value={this.state.password} onChange={this.handleChange} fullWidth/>
                         {errors.general && (
                             <Typography variant="body2" className={classes.customError}>
-                                
+                                {errors.general}
                             </Typography>
                         )}
-                        <Button type="submit" variant="contained" color="primary" className={classes.button}>Login</Button>
+                        <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={loading}>Login {loading && (
+                            <CircularProgress size={30} className={classes.progress}/>
+                            )}
+                        </Button>
+                        <small>OR</small>
                         <Button type="submit" variant="contained" color="primary" className={classes.button} component={Link} to='/signup'>Create An Account</Button>
                     </form>
                 </Grid>
