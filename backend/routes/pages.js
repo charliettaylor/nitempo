@@ -4,7 +4,7 @@ const router = express.Router();
 const apiController = require("../controllers/api");
 
 router.get('/', authController.isLoggedIn, (req, res) => {
-    res.render('index', {
+    res.render('home', {
         user: req.user
     });
 });

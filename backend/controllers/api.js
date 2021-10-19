@@ -33,7 +33,7 @@ const scopes = [
     'user-follow-modify'
   ];
 
-
+// req needs destination of where to redirect
 exports.login = (req, res) => {
     res.redirect(spotifyApi.createAuthorizeURL(scopes));
 }
@@ -64,13 +64,12 @@ exports.callback = async (req, res) => {
         console.log('refresh_token:', refresh_token);
         console.log("cookie" + req.cookies);
 
-        console.log("UPDATE user SET accesstoken = ? WHERE userId = ?", [access_token, req.cookies.login.id]);
-
         db.query("UPDATE user SET accesstoken = ? WHERE userId = ?", [access_token, decoded.id]);
     
         console.log(
             `Sucessfully retreived access token. Expires in ${expires_in} s.`
         );
+
         res.redirect('/profile');
     
         setInterval(async () => {
@@ -87,6 +86,29 @@ exports.callback = async (req, res) => {
         console.error('Error getting Tokens:', error);
         res.send(`Error getting Tokens: ${error}`);
     });
+}
+
+exports.getMe = async (req, res) => {
+    await spotifyApi.getMe()
+        .then((data) => {
+            console.log(data.body);
+        })
+        .catch((err) => {
+            console.log("Error: " + err.message);
+        });
+}
+
+//GET  PLAYLISTS
+exports.getUserPlaylists = async (req, res) => {
+    const me = await spotifyApi.getMe();
+    const data = await spotifyApi.getUserPlaylists(me.display_name);
+    let playlists = []
+
+    for (let playlist of data.body.items) {
+        playlists.push(playlist.id);
+    }
+
+    console.log(playlists);
 }
 
 //module.exports = spotifyApi;

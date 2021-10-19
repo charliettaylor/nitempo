@@ -19,12 +19,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, '../frontend/views'));
+app.set('views', path.join(__dirname, '../frontend/src/views'));
 app.set('public', path.join(__dirname, '../frontend/public'));
 
 // Define Routes
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
+app.use('/spotify', require('./routes/spotify'));
 
 //app.listen(5000, () => {
    // console.log('Server started on port 5000');

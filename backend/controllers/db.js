@@ -1,4 +1,4 @@
-var mysql = require('mysql2');
+var mysql = require('mysql');
 const dotenv = require('dotenv');
 // dotenv is being stupid and won't take relative paths
 var path = require('path');
