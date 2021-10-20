@@ -9,6 +9,8 @@ router.post('/login', authController.login);
 
 router.get('/logout', authController.logout);
 
+router.get('/getUserById', authController.getUserById);
+
 router.get('/spotifylogin', apiController.login);
 
 module.exports = router;
