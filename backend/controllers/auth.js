@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { promisify } = require('util');
 
-
+// requires email and password from body
 exports.login = (req, res) => {
     try{
         console.log(req.body);
@@ -93,6 +93,20 @@ exports.signup = (req, res) => {
             }
         });
     });
+}
+
+exports.getUserById = (req, res) => {
+    try{
+        db.query('SELECT * FROM user WHERE userID = ?', [req.userID],
+        (error, result) => {
+            if (!result) {
+                res.status(400).json({ body: 'No user with specified ID' });
+            }
+            req.user = result[0];
+        });
+    } catch(error) {
+        console.log(error);
+    }
 }
 
 exports.isLoggedIn = async (req, res, next) => {
