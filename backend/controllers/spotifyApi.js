@@ -6,7 +6,7 @@ const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
 
 const spotifyApi = new SpotifyWebApi({
-    redirectUri: 'http://localhost:8888/callback',
+    redirectUri: 'http://localhost:8888/auth/callback',
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET
 });
@@ -35,7 +35,7 @@ const scopes = [
 
 // req needs destination of where to redirect
 exports.login = (req, res) => {
-    res.redirect(spotifyApi.createAuthorizeURL(scopes));
+    res.json({ redirect: spotifyApi.createAuthorizeURL(scopes) });
 }
 
 exports.callback = async (req, res) => {
@@ -59,10 +59,6 @@ exports.callback = async (req, res) => {
     
         spotifyApi.setAccessToken(access_token);
         spotifyApi.setRefreshToken(refresh_token);
-    
-        console.log('access_token:', access_token);
-        console.log('refresh_token:', refresh_token);
-        console.log("cookie" + req.cookies);
 
         db.query("UPDATE user SET accesstoken = ? WHERE userId = ?", [access_token, decoded.id]);
     
@@ -70,8 +66,6 @@ exports.callback = async (req, res) => {
             `Sucessfully retreived access token. Expires in ${expires_in} s.`
         );
 
-        res.redirect('/profile');
-    
         setInterval(async () => {
             const data = await spotifyApi.refreshAccessToken();
             const access_token = data.body['access_token'];

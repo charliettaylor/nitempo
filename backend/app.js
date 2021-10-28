@@ -4,7 +4,7 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const path = require('path');
 var db = require('./controllers/db');
 const cookieParser = require('cookie-parser');
-const api = require('./controllers/api');
+const api = require('./controllers/spotifyApi');
 
 
 const app = express();
@@ -23,7 +23,6 @@ app.set('views', path.join(__dirname, '../frontend/src/views'));
 app.set('public', path.join(__dirname, '../frontend/public'));
 
 // Define Routes
-app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
 app.use('/spotify', require('./routes/spotify'));
 

@@ -9,17 +9,13 @@ exports.login = (req, res) => {
         console.log(req.body);
         const { email, password } = req.body;
         if( !email || !password ){
-            return res.status(400).render('login', {
-                message: "Please provide an email or password"
-            });
+            res.status(400).json({ message: "Please provide an email or password" });
         }
 
         db.query("SELECT * FROM user WHERE Email = ?", [email],
         async (error, result) => {
             if( !result || !(await bcrypt.compare(password, result[0].password)) ){
-                res.status(401).render('login', {
-                    message: 'Email or Password is incorrect'
-                });
+                res.status(400).json({ message: "Email or password is incorrect" });
             } else {
                 const id = result[0].userID;
                 // id same as "id: id"
@@ -37,7 +33,7 @@ exports.login = (req, res) => {
                 };
 
                 res.cookie('login', token, cookieOptions);
-                res.status(200).redirect("/");
+                res.status(200).json({ message: 'Login success' });
             }
         });
 
@@ -52,7 +48,7 @@ exports.logout = (req, res) => {
         httpOnly: true
     });
 
-    res.status(200).redirect('/');
+    res.status(200).json({ message: '' });
 }
 
 exports.signup = (req, res) => {
@@ -68,14 +64,10 @@ exports.signup = (req, res) => {
         }
         
         if(result > 0){
-            return res.render('signup', {
-                message: 'Email already in use'
-            });
+            res.status(400).json({ message: "Email already in use" });
         }
         else if(password !== passwordConfirm){
-            return res.render('signup', {
-                message: 'Passwords do not match'
-            });
+            res.status(400).json({ message: "Passwords do not match" });
         }
 
         let hashedPassword = await bcrypt.hash(password, 8);
@@ -87,9 +79,7 @@ exports.signup = (req, res) => {
                 console.log(error);
             } else {
                 console.log(result);
-                return res.render('signup', {
-                    message: 'User acount created!'
-                });
+                res.status(400).json({ message: 'User account created!' });
             }
         });
     });
@@ -100,16 +90,16 @@ exports.getUserById = (req, res) => {
         db.query('SELECT * FROM user WHERE userID = ?', [req.userID],
         (error, result) => {
             if (!result) {
-                res.status(400).json({ body: 'No user with specified ID' });
+                res.status(400).json({ message: 'No user with specified ID' });
             }
-            req.user = result[0];
+            res.status(200).json(result[0]);
         });
     } catch(error) {
         console.log(error);
     }
 }
 
-exports.isLoggedIn = async (req, res, next) => {
+exports.isLoggedIn = async (req, res) => {
     console.log(req.cookies);
     if ( req.cookies.login ){
         try {
@@ -122,14 +112,13 @@ exports.isLoggedIn = async (req, res, next) => {
                 if (!result) {
                     return next();
                 }
-                req.user = result[0];
-                return next();
+                res.status(400).json(result[0]);
             });
         } catch (error) {
             console.log(error);
-            return next();
+            res.status(400).json({ message: error });
         }
     } else {
-        next();
+        res.status(400).json({ error: "No cookie given" });
     }
 }
