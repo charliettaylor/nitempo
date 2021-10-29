@@ -3,6 +3,8 @@ const authController = require("../controllers/auth");
 const apiController = require("../controllers/spotifyApi");
 const router = express.Router();
 
+router.get('/test', (req, res) => {res.send({test: req.body})});
+
 router.post('/signup', authController.signup);
 
 router.post('/login', authController.login);
