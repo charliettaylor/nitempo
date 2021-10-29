@@ -3,10 +3,10 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { promisify } = require('util');
 
-// requires email and password from body
+// login query
+// { email: string, password: string }
 exports.login = (req, res) => {
     try{
-        console.log(req.body);
         const { email, password } = req.body;
         if( !email || !password ){
             res.status(400).json({ message: "Please provide an email or password" });
@@ -21,7 +21,7 @@ exports.login = (req, res) => {
                 // id same as "id: id"
                 const token = jwt.sign({ id }, process.env.JWT_SECRET, {
                     expiresIn: process.env.JWT_EXPIRES_IN
-                });
+            });
 
                 console.log("The token is: " + token);
 
@@ -42,6 +42,7 @@ exports.login = (req, res) => {
     }
 }
 
+// logout (no longer needed?)
 exports.logout = (req, res) => {
     res.cookie('login', 'logout', {
         expires: new Date(Date.now() + 2),
@@ -51,13 +52,18 @@ exports.logout = (req, res) => {
     res.status(200).json({ message: '' });
 }
 
+// signup query
+// {   username: string,
+//     email: string,
+//     password: string,
+//     passwordConfirm: string }
 exports.signup = (req, res) => {
     console.log(req.body);
 
     // destructuring in JS
     const { username, email, password, passwordConfirm } = req.body;
 
-    db.query('SELECT email FROM user WHERE email = ?', [email], 
+    db.query('SELECT email FROM user WHERE email = ?', [email],
     async (error, result) =>{
         if (error){
             console.log(error);
@@ -73,52 +79,47 @@ exports.signup = (req, res) => {
         let hashedPassword = await bcrypt.hash(password, 8);
         console.log(hashedPassword);
 
-        db.query('INSERT INTO user SET ?', 
-        { username: username, email: email, password: hashedPassword }, (error, result) =>{
+        db.query('INSERT INTO user SET ?',
+        { username: username, email: email, password: hashedPassword }, (error, result) => {
             if(error){
                 console.log(error);
             } else {
                 console.log(result);
-                res.status(400).json({ message: 'User account created!' });
+                res.status(200).json({ message: 'User account created!' });
             }
         });
     });
 }
 
+// getUserById query
+// { userID : int }
 exports.getUserById = (req, res) => {
     try{
-        db.query('SELECT * FROM user WHERE userID = ?', [req.userID],
+        console.log(req.body.userID);
+        db.query('SELECT * FROM user WHERE userID = ?', [req.body.userID],
         (error, result) => {
             if (!result) {
                 res.status(400).json({ message: 'No user with specified ID' });
             }
-            res.status(200).json(result[0]);
+            //res.send({"message" : "worked"});
+            res.status(200).send(result[0]);
         });
     } catch(error) {
         console.log(error);
     }
 }
 
-exports.isLoggedIn = async (req, res) => {
-    console.log(req.cookies);
-    if ( req.cookies.login ){
-        try {
-            //1) verify the token
-            const decoded = await promisify(jwt.verify)(req.cookies.login, process.env.JWT_SECRET);
-        
-            //2) Check if the user still exists
-            db.query('SELECT * FROM user WHERE userID = ?', [decoded.id],
-            (error, result) => {
-                if (!result) {
-                    return next();
-                }
-                res.status(400).json(result[0]);
-            });
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({ message: error });
+// { userID : int }
+exports.getUserInfo = async (req, res, next) => {
+    db.query('SELECT * FROM user WHERE userID = ?', [req.body.userID],
+    (error, result) => {
+        if (!result) {
+            return next();
         }
-    } else {
-        res.status(400).json({ error: "No cookie given" });
-    }
+        // turn MySQL row into JSON
+        result = result.map(v => Object.assign({}, v));
+        console.log(result[0]);
+        req.body = result[0];
+        return next();
+    });
 }

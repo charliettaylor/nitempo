@@ -33,8 +33,11 @@ const scopes = [
     'user-follow-modify'
   ];
 
+var id;
+
 // req needs destination of where to redirect
 exports.login = (req, res) => {
+    id = req.body.userID;
     res.json({ redirect: spotifyApi.createAuthorizeURL(scopes) });
 }
 
@@ -42,7 +45,6 @@ exports.callback = async (req, res) => {
     const error = req.query.error;
     const code = req.query.code;
     const state = req.query.state;
-    const decoded = await promisify(jwt.verify)(req.cookies.login, process.env.JWT_SECRET);
     
     if (error) {
         console.error('Callback Error:', error);
@@ -60,7 +62,9 @@ exports.callback = async (req, res) => {
         spotifyApi.setAccessToken(access_token);
         spotifyApi.setRefreshToken(refresh_token);
 
-        db.query("UPDATE user SET accesstoken = ? WHERE userId = ?", [access_token, decoded.id]);
+        console.log(req.body);
+
+        db.query("UPDATE user SET accesstoken = ? WHERE userId = ?", [access_token, id]);
     
         console.log(
             `Sucessfully retreived access token. Expires in ${expires_in} s.`
@@ -83,9 +87,11 @@ exports.callback = async (req, res) => {
 }
 
 exports.getMe = async (req, res) => {
+    spotifyApi.setAccessToken(req.body.accessToken);
     await spotifyApi.getMe()
         .then((data) => {
             console.log(data.body);
+            res.send(data);
         })
         .catch((err) => {
             console.log("Error: " + err.message);
@@ -94,6 +100,7 @@ exports.getMe = async (req, res) => {
 
 //GET  PLAYLISTS
 exports.getUserPlaylists = async (req, res) => {
+    spotifyApi.setAccessToken(req.body.accessToken);
     const me = await spotifyApi.getMe();
     const data = await spotifyApi.getUserPlaylists(me.display_name);
     let playlists = []
@@ -103,6 +110,7 @@ exports.getUserPlaylists = async (req, res) => {
     }
 
     console.log(playlists);
+    res.json({ "playlists" : playlists });
 }
 
 //module.exports = spotifyApi;
