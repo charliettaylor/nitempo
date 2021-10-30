@@ -4,9 +4,10 @@ const express = require('express');
 const app = express();
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
+const { create } = require('hbs');
 
 const spotifyApi = new SpotifyWebApi({
-    redirectUri: 'http://localhost:8888/auth/callback',
+    redirectUri: process.env.SPOTIFY_REDIRECT_URI,
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET
 });
@@ -33,11 +34,8 @@ const scopes = [
     'user-follow-modify'
   ];
 
-var id;
-
 // req needs destination of where to redirect
 exports.login = (req, res) => {
-    id = req.body.userID;
     res.json({ redirect: spotifyApi.createAuthorizeURL(scopes) });
 }
 
@@ -62,10 +60,6 @@ exports.callback = async (req, res) => {
         spotifyApi.setAccessToken(access_token);
         spotifyApi.setRefreshToken(refresh_token);
 
-        console.log(req.body);
-
-        db.query("UPDATE user SET accesstoken = ? WHERE userId = ?", [access_token, id]);
-    
         console.log(
             `Sucessfully retreived access token. Expires in ${expires_in} s.`
         );
@@ -73,16 +67,49 @@ exports.callback = async (req, res) => {
         setInterval(async () => {
             const data = await spotifyApi.refreshAccessToken();
             const access_token = data.body['access_token'];
-    
+
             console.log('The access token has been refreshed!');
             console.log('access_token:', access_token);
             db.query("UPDATE user SET accesstoken = ? WHERE userId = ?", [access_token, req.cookies.login.id]);
             spotifyApi.setAccessToken(access_token);
         }, expires_in / 2 * 1000);
+
+        return spotifyApi.getMe();
         })
+        .then(data => {
+            var accessToken = spotifyApi.getAccessToken();
+            var refreshToken = spotifyApi.getRefreshToken();
+
+            if(!userExists(data.body['id'])){
+                db.query("UPDATE user SET accessToken = ?, refreshToken = ? WHERE userId = ?", [accessToken, refreshToken, data.body['id']]);
+                console.log(data.body['id'] + ' tokens updated');
+            } else {
+                db.query('INSERT INTO user SET ?',
+                { userID: data.body["id"], email: data.body["email"], accessToken: accessToken, refreshToken: refreshToken },
+                (error, result) => {
+                    if(error){
+                        console.log(error);
+                    } else {
+                        console.log(result);
+                    }
+            });
+            }
+        }
+        )
         .catch(error => {
         console.error('Error getting Tokens:', error);
         res.send(`Error getting Tokens: ${error}`);
+    });
+}
+
+function userExists(userID){
+    db.query('SELECT * FROM user WHERE userID = ?', [userID],
+    (error, result) => {
+        if (!result) {
+            console.log('no result');
+            return true;
+        }
+        return false;
     });
 }
 
@@ -101,16 +128,23 @@ exports.getMe = async (req, res) => {
 //GET  PLAYLISTS
 exports.getUserPlaylists = async (req, res) => {
     spotifyApi.setAccessToken(req.body.accessToken);
-    const me = await spotifyApi.getMe();
-    const data = await spotifyApi.getUserPlaylists(me.display_name);
-    let playlists = []
+    await spotifyApi.getMe()
+    .then(data => {
+        spotifyApi.getUserPlaylists(data.body['id'])
+        .then(data => {
+        let playlists = []
 
-    for (let playlist of data.body.items) {
-        playlists.push(playlist.id);
-    }
+        for (let playlist of data.body.items) {
+            playlists.push(playlist.id);
+        }
 
-    console.log(playlists);
-    res.json({ "playlists" : playlists });
+        console.log(playlists);
+        res.json({ "playlists" : playlists });
+    })
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 }
 
 //module.exports = spotifyApi;
