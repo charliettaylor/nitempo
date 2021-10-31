@@ -18,34 +18,26 @@ USE `nitempo` ;
 -- Table `nitempo`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `nitempo`.`user` (
-  `userID` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(16) NOT NULL,
-  `password` VARCHAR(200) NOT NULL,
+  `userID` VARCHAR(35) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
-  `accessToken` VARCHAR(300) NULL,
   `dob` DATE NULL,
   `gender` CHAR(1) NULL,
   `bio` VARCHAR(255) NULL,
+  `accessToken` VARCHAR(500) NULL,
+  `refreshToken` VARCHAR(500) NULL,
   PRIMARY KEY (`userID`),
-  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE);
 
 
 -- -----------------------------------------------------
--- Table `nitempo`.`song`
+-- Table `nitempo`.`music`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `nitempo`.`song` (
-  `songID` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `nitempo`.`music` (
+  `musicID` VARCHAR(25) NOT NULL,
   `artist` VARCHAR(255) NOT NULL,
-  `songListed_time` DATETIME NULL,
-  `userID` INT NOT NULL,
-  PRIMARY KEY (`songID`, `userID`),
-  INDEX `fk_song_user_idx` (`userID` ASC) VISIBLE,
-  CONSTRAINT `fk_song_user`
-    FOREIGN KEY (`userID`)
-    REFERENCES `nitempo`.`user` (`userID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  `type` VARCHAR(10) NULL,
+  `musicListed_time` DATETIME NULL,
+  PRIMARY KEY (`musicID`));
 
 
 -- -----------------------------------------------------
@@ -56,19 +48,19 @@ CREATE TABLE IF NOT EXISTS `nitempo`.`rating` (
   `starRating` INT NOT NULL,
   `review` VARCHAR(255) NOT NULL,
   `rating_time` DATETIME NULL,
-  `userID` INT NOT NULL,
-  `songID` INT NOT NULL,
-  PRIMARY KEY (`ratingID`, `userID`, `songID`),
+  `musicID` VARCHAR(25) NOT NULL,
+  `userID` VARCHAR(35) NOT NULL,
+  PRIMARY KEY (`ratingID`, `musicID`, `userID`),
+  INDEX `fk_rating_song1_idx` (`musicID` ASC) VISIBLE,
   INDEX `fk_rating_user1_idx` (`userID` ASC) VISIBLE,
-  INDEX `fk_rating_song1_idx` (`songID` ASC) VISIBLE,
+  CONSTRAINT `fk_rating_song1`
+    FOREIGN KEY (`musicID`)
+    REFERENCES `nitempo`.`music` (`musicID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_rating_user1`
     FOREIGN KEY (`userID`)
     REFERENCES `nitempo`.`user` (`userID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_rating_song1`
-    FOREIGN KEY (`songID`)
-    REFERENCES `nitempo`.`song` (`songID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -77,9 +69,9 @@ CREATE TABLE IF NOT EXISTS `nitempo`.`rating` (
 -- Table `nitempo`.`friend`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `nitempo`.`friend` (
-  `friendID` INT NOT NULL AUTO_INCREMENT,
-  `userID` INT NOT NULL,
-  PRIMARY KEY (`friendID`, `userID`),
+  `followID` VARCHAR(35) NOT NULL,
+  `userID` VARCHAR(35) NOT NULL,
+  PRIMARY KEY (`followID`, `userID`),
   INDEX `fk_friend_user1_idx` (`userID` ASC) VISIBLE,
   CONSTRAINT `fk_friend_user1`
     FOREIGN KEY (`userID`)
@@ -94,10 +86,18 @@ CREATE TABLE IF NOT EXISTS `nitempo`.`friend` (
 CREATE TABLE IF NOT EXISTS `nitempo`.`post` (
   `postID` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(255) NOT NULL,
+  `type` VARCHAR(10) NULL,
   `post_time` DATETIME NULL,
-  `userID` INT NOT NULL,
+  `musicID` VARCHAR(25) NULL,
+  `userID` VARCHAR(35) NOT NULL,
   PRIMARY KEY (`postID`, `userID`),
+  INDEX `fk_post_song1_idx` (`musicID` ASC) VISIBLE,
   INDEX `fk_post_user1_idx` (`userID` ASC) VISIBLE,
+  CONSTRAINT `fk_post_song1`
+    FOREIGN KEY (`musicID`)
+    REFERENCES `nitempo`.`music` (`musicID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_post_user1`
     FOREIGN KEY (`userID`)
     REFERENCES `nitempo`.`user` (`userID`)
@@ -108,3 +108,4 @@ CREATE TABLE IF NOT EXISTS `nitempo`.`post` (
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
