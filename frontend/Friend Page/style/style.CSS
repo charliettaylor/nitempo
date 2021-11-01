@@ -319,14 +319,14 @@ main {
   max-height: 100vh;
 }
 
-/* 隐藏图片 */
+/* minimize pics on the menu */
 .down_btn_select + .down_box_con > .down_box_img {
   transition: all 0.1s;
   opacity: 0;
   visibility: hidden;
 }
 
-/* 选中样式 */
+/* choose */
 .down_box .link {
   cursor: pointer;
   transition: all 0.15s;
@@ -338,7 +338,7 @@ main {
   color: #fff;
 }
 
-/* 朋友 */
+/* friend */
 .frend_links {
   width: 100%;
 }
