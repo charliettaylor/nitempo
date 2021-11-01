@@ -8,4 +8,6 @@ router.get('/getMe', authController.getUserInfo, apiController.getMe);
 
 router.get('/getPlaylists', authController.getUserInfo, apiController.getUserPlaylists);
 
+router.get('/refreshTokens', authController.getUserInfo, apiController.refreshUserTokens);
+
 module.exports = router;

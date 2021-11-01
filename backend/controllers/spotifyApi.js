@@ -34,11 +34,13 @@ const scopes = [
     'user-follow-modify'
   ];
 
-// req needs destination of where to redirect
+// req : empty
+// res : { redirect : URL }
 exports.login = (req, res) => {
     res.json({ redirect: spotifyApi.createAuthorizeURL(scopes) });
 }
 
+// Spotify callback to either create user or update tokens
 exports.callback = async (req, res) => {
     const error = req.query.error;
     const code = req.query.code;
@@ -64,23 +66,21 @@ exports.callback = async (req, res) => {
             `Sucessfully retreived access token. Expires in ${expires_in} s.`
         );
 
-        setInterval(async () => {
-            const data = await spotifyApi.refreshAccessToken();
-            const access_token = data.body['access_token'];
-
-            console.log('The access token has been refreshed!');
-            console.log('access_token:', access_token);
-            db.query("UPDATE user SET accesstoken = ? WHERE userId = ?", [access_token, req.cookies.login.id]);
-            spotifyApi.setAccessToken(access_token);
-        }, expires_in / 2 * 1000);
-
         return spotifyApi.getMe();
         })
         .then(data => {
             var accessToken = spotifyApi.getAccessToken();
             var refreshToken = spotifyApi.getRefreshToken();
+            var result = db.query('SELECT DISTINCT * FROM user WHERE userID = ?', [data.body['id']],
+            (error, result) => {
+                if(error){
+                    console.log("Error: " + error);
+                    return [];
+                }
+                return result;
+            });
 
-            if(!userExists(data.body['id'])){
+            if(result){
                 db.query("UPDATE user SET accessToken = ?, refreshToken = ? WHERE userId = ?", [accessToken, refreshToken, data.body['id']]);
                 console.log(data.body['id'] + ' tokens updated');
             } else {
@@ -92,27 +92,18 @@ exports.callback = async (req, res) => {
                     } else {
                         console.log(result);
                     }
-            });
+                });
             }
-        }
-        )
+        })
         .catch(error => {
-        console.error('Error getting Tokens:', error);
-        res.send(`Error getting Tokens: ${error}`);
-    });
+            console.error('Error getting Tokens:', error);
+            res.send(`Error getting Tokens: ${error}`);
+        });
 }
 
-function userExists(userID){
-    db.query('SELECT * FROM user WHERE userID = ?', [userID],
-    (error, result) => {
-        if (!result) {
-            console.log('no result');
-            return true;
-        }
-        return false;
-    });
-}
-
+// req : { userID: string }
+// success res : Spotify info JSON
+// failure res : { error : error }
 exports.getMe = async (req, res) => {
     spotifyApi.setAccessToken(req.body.accessToken);
     await spotifyApi.getMe()
@@ -120,12 +111,14 @@ exports.getMe = async (req, res) => {
             console.log(data.body);
             res.send(data);
         })
-        .catch((err) => {
-            console.log("Error: " + err.message);
+        .catch((error) => {
+            console.log("Error: " + error.message);
+            res.json({ error: error });
         });
 }
 
-//GET  PLAYLISTS
+// req : { userID: string }
+// res : { playlists: array of IDs }
 exports.getUserPlaylists = async (req, res) => {
     spotifyApi.setAccessToken(req.body.accessToken);
     await spotifyApi.getMe()
@@ -140,10 +133,26 @@ exports.getUserPlaylists = async (req, res) => {
 
         console.log(playlists);
         res.json({ "playlists" : playlists });
-    })
+        })
     })
     .catch((error) => {
         console.log(error);
+    });
+}
+
+// req : { userID : string }
+// success res : { message: string }
+// failure res : { message: error, redirect: URL }
+exports.refreshUserTokens = async (req, res) => {
+    var { accessToken, refreshToken } = req.body;
+    spotifyApi.setAccessToken(accessToken);
+    spotifyApi.setRefreshToken(refreshToken);
+    spotifyApi.refreshAccessToken()
+    .then(data => {
+        spotifyApi.setAccessToken(data.body['access_token']);
+        res.json({ message: "Refresh success" });
+    }).catch(error => {
+        res.json({ message: error, redirect: spotifyApi.createAuthorizeURL(scopes) });
     });
 }
 
