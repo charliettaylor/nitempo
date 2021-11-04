@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios';  //this is just testing with the firebase server
+import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
 
 import Melody from '../components/Melody';
@@ -8,11 +8,11 @@ class home extends Component {
     state = {
         melodies: null
     }
-    componentDidMount(){    //this is connected to the firebase database for now
-        axios.get('/Melodies')
+    componentDidMount(){
+        axios.get('getUserById')
         .then(res => {
             this.setState({
-                melodies: res.data
+                melodies: res.user
             })
         })
         .catch(err => console.log(err))

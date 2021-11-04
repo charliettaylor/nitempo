@@ -76,8 +76,10 @@ function App() {
           <div className='container'>
             <Switch>
               <Route exact path="/" component={home}/>
-              <AuthRoute exact path="/login" component={login} authenticated={authenticated}/>
+              <AuthRoute exact path="/auth/login" component={login} authenticated={authenticated}/>
               <AuthRoute exact path="/signup" component={signup} authenticated={authenticated}/>
+              <Route path="/auth/getUserById/:id">
+              </Route>
             </Switch>
           </div>
         </Router>

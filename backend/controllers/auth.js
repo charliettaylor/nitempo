@@ -102,7 +102,9 @@ exports.getUserById = (req, res) => {
             if (!result) {
                 res.status(400).json({ body: 'No user with specified ID' });
             }
-            req.user = result[0];
+            res.json([{
+                user: result[0]
+            }])
         });
     } catch(error) {
         console.log(error);

@@ -32,7 +32,7 @@ const styles = {
 export class Melody extends Component {
     render() {
         dayjs.extend(relativeTime)
-            const { classes, melody : { body, createdAt, userImage, userHandle, screamId, likeCount, commentCount } } = this.props
+            const { classes, melody : { body, createdAt, userImage, userHandle, melodyId, likeCount, commentCount } } = this.props
         return (
             <Card className={classes.card}>
                 <CardMedia image={userImage} title="Profile image" className={classes.image}/>
@@ -42,7 +42,7 @@ export class Melody extends Component {
                     <Typography variant="body1">{body}</Typography>
                 </CardContent>
             </Card>
-        ) //to={`/users/${userHandle}`}
+        )
     }
 }
 
