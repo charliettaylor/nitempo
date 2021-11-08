@@ -141,18 +141,38 @@ exports.getUserPlaylists = async (req, res) => {
 }
 
 // req : { userID : string }
-// success res : { message: string }
+// success res : { userID: string, message: string }
 // failure res : { message: error, redirect: URL }
 exports.refreshUserTokens = async (req, res) => {
     var { accessToken, refreshToken } = req.body;
     spotifyApi.setAccessToken(accessToken);
     spotifyApi.setRefreshToken(refreshToken);
+
     spotifyApi.refreshAccessToken()
     .then(data => {
         spotifyApi.setAccessToken(data.body['access_token']);
+        db.query("UPDATE user SET accessToken = ? WHERE userId = ?", [data.body['access_token'], req.body['userID']]);
         res.json({ message: "Refresh success" });
     }).catch(error => {
         res.json({ message: error, redirect: spotifyApi.createAuthorizeURL(scopes) });
+    });
+}
+
+// req : { query : string }
+// success res : { ? }
+exports.search = async (req, res) => {
+    var { accessToken, refreshToken } = req.body;
+    spotifyApi.setAccessToken(accessToken);
+    spotifyApi.setRefreshToken(refreshToken);
+    let types = ['album', 'artist', 'playlist', 'track', 'show', 'episode'];
+    let limits = { limit : 5, offset : 1 };
+    console.log(req.body);
+
+    spotifyApi.search(req.body['query'], types, limits)
+    .then(data => {
+        res.json({ result: data.body });
+    }).catch(error => {
+        res.json({ message: error});
     });
 }
 

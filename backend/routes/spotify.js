@@ -10,4 +10,6 @@ router.get('/getPlaylists', authController.getUserInfo, apiController.getUserPla
 
 router.get('/refreshTokens', authController.getUserInfo, apiController.refreshUserTokens);
 
+router.get('/search', authController.getUserInfo, apiController.search);
+
 module.exports = router;
