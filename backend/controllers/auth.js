@@ -30,8 +30,7 @@ exports.getUserInfo = async (req, res, next) => {
         }
         // turn MySQL row into JSON
         result = result.map(v => Object.assign({}, v));
-        console.log(result[0]);
-        req.body = result[0];
+        req.body = { ...req.body, ...result[0] };
         return next();
     });
 }
