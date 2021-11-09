@@ -6,13 +6,13 @@ const db = require('./db');
 // req : { userID: string, description: string, type: string, musicID: string }
 // res : { message : success/error }
 exports.create = (req, res) => {
-    let date_time = new Date();
-    db.query('INSERT INTO post VALUES userID = ?, description = ?, type = ?, musicID = ?, post_time = ?',
-        { userID: data.body["id"], description: data.body["description"], type: data.body["type"], musicID: data.body["musicID"], post_time: date_time },
+    let date_time = new Date().toUTCString();
+    db.query('INSERT INTO post VALUES (0, ?, ?, ?, ?, ?)',
+        [req.body["description"], date_time, req.body["type"], req.body["musicID"], req.body["userID"]],
         (error, result) => {
             if(error){
                 console.log(error);
-                res.json({ message: "Post error, could not create"});
+                res.status(400).json({ message: "Post error, could not create"});
             } else {
                 console.log(result);
                 res.json({ message: "Post success" });
