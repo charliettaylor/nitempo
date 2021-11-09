@@ -25,6 +25,7 @@ app.set('public', path.join(__dirname, '../frontend/public'));
 // Define Routes
 app.use('/auth', require('./routes/auth'));
 app.use('/spotify', require('./routes/spotify'));
+app.use('/post', require('./routes/post'));
 
 //app.listen(5000, () => {
    // console.log('Server started on port 5000');
