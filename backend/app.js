@@ -32,7 +32,7 @@ app.use('/post', require('./routes/post'));
 //});
 
 const PORT = process.env.PORT || 8888;
-app.listen(8888, () =>
+app.listen(PORT, () =>
   console.log(
     'HTTP Server up. Now go to http://localhost:8888/login in your browser.'
   )
