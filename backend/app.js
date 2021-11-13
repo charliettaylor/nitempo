@@ -31,6 +31,7 @@ app.use('/post', require('./routes/post'));
    // console.log('Server started on port 5000');
 //});
 
+const PORT = process.env.PORT || 8888;
 app.listen(8888, () =>
   console.log(
     'HTTP Server up. Now go to http://localhost:8888/login in your browser.'
