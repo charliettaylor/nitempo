@@ -9,11 +9,9 @@ class home extends Component {
         melodies: null
     }
     componentDidMount(){    //this is connected to the firebase database for now
-        axios.get('/Melodies')
+        axios.get('/post/get')
         .then(res => {
-            this.setState({
-                melodies: res.data
-            })
+            console.log(res.body);
         })
         .catch(err => console.log(err))
     }
