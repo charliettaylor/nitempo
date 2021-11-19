@@ -1,5 +1,6 @@
+import React from "react";
 import "./share.css";
-import {PermMedia, Label, Room, EmojiEmotions} from "@material-ui/icons"
+import {Audiotrack, PhotoLibrary, EmojiEmotions} from "@material-ui/icons"
 
 export default function Share() {
     return (
@@ -13,23 +14,19 @@ export default function Share() {
                 <div className="shareBottom">
                     <div className="shareOptions">
                         <div className="shareOption">
-                            <PermMedia htmlColor="tomato" className="shareIcon"/>
-                            <span className="shareOptionText">Photo or Video</span>
+                            <Audiotrack htmlColor="#3D4363" className="shareIcon"/>
+                            <span className="shareOptionText">Share Music</span>
                         </div>
                         <div className="shareOption">
-                            <Label htmlColor="tomato" className="shareIcon"/>
-                            <span className="shareOptionText">Tag</span>
+                            <PhotoLibrary htmlColor="#3D4363" className="shareIcon"/>
+                            <span className="shareOptionText">Pictures</span>
                         </div>
                         <div className="shareOption">
-                            <Room htmlColor="tomato" className="shareIcon"/>
-                            <span className="shareOptionText">Locations</span>
-                        </div>
-                        <div className="shareOption">
-                            <EmojiEmotions htmlColor="tomato" className="shareIcon"/>
-                            <span className="shareOptionText">Thoughts</span>
+                            <EmojiEmotions htmlColor="#3D4363" className="shareIcon"/>
+                            <span className="shareOptionText">Emoji</span>
                         </div>
                     </div>
-                    <button className="shareButton">Share</button>
+                    <button className="shareButton">POST</button>
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 import "./register.css"
+import React from "react";
 
 export default function Register() {
     return (
@@ -6,7 +7,7 @@ export default function Register() {
             <div className="loginWrapper">
                 <div className="loginLeft">
                     <h3 className="loginLogo">Nitempo</h3>
-                    <span className="loginDesc">This is the login description</span>
+                    <span className="loginDesc">Listen, Vibe, Enjoy.</span>
                 </div>
                 <div className="loginRight">
                     <div className="loginBox">

@@ -6,6 +6,7 @@ import Feed from "../../components/feed/Feed";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from "react-router"
+import React from "react";
 
 export default function Profile() {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -25,18 +26,18 @@ export default function Profile() {
     }, [username])
 
     return (
-        <>
+        <React.Fragment>
             <Topbar/>
             <div className="profile">
                 <Leftbar/>
                 <div className="profileRight">
                     <div className="profileRightTop">
                         <div className="profileCover">
-                            <img className="profileCoverImg" src={user.coverPicture || PF+"profiles/noBanner.png"} alt="" />
-                            <img className="profileUserImg" src={user.profilePicture || PF+"profiles/noAvatar.png"} alt="" />
+                            <img className="profileCoverImg" src={user.coverPicture  ||PF+"profiles/noBanner.png"} alt="" />
+                            <img className="profileUserImg" src={user.profilePicture  ||PF+"profiles/noAvatar.png"} alt="" />
                         </div>
                         <div className="profileInfo">
-                            <h4 className="profileInfoName">{user.username}</h4>                            
+                            <h4 className="profileInfoName">{user.username}</h4>
                             <span className="profileInfoDesc">{user.desc}</span>
                         </div>
                     </div>
@@ -46,6 +47,6 @@ export default function Profile() {
                     </div>
                 </div>
             </div>
-        </>
+        </React.Fragment>
     )
 }
