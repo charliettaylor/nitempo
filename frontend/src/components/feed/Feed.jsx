@@ -13,7 +13,7 @@ export default function Feed({ username }) {
             try {
                 const res = username 
                     ? await axios.get("/posts/profile/" + username) //change this later to our new db
-                    : await axios.get("posts/timeline/6193694bc102b20b2e373580") //change this later to our new db
+                    : await axios.get("/posts") //change this later to our new db
                 setPosts(res.data)
             } catch(e) {
                 console.error(e.response.data)

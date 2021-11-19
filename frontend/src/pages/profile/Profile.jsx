@@ -1,6 +1,6 @@
 import "./profile.css"
 import Topbar from "../../components/topbar/Topbar";
-import Leftbar from "../../components/leftbar/Leftbar";
+import Leftbar from "../../components/leftbar_profile/Leftbar_profile";
 import Rightbar from "../../components/rightbar/Rightbar";
 import Feed from "../../components/feed/Feed";
 import { useState, useEffect } from 'react';
@@ -16,7 +16,7 @@ export default function Profile() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get(`/users/?username=${username}`)
+                const res = await axios.get(`/users/?username=${username}`) //backend endpoint here
                 setUser(res.data)
             } catch(e) {
                 console.error(e.response.data)
