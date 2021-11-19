@@ -3,6 +3,7 @@ import Post from "../post/Post"
 import { useEffect, useState } from 'react';
 import Share from "../share/Share"
 import axios from "axios";
+import React from "react";
 
 export default function Feed({ username }) {
     const [posts, setPosts] = useState([])
