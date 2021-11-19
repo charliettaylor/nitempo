@@ -17,23 +17,23 @@ export default function Leftbar() {
                 <ul className="leftbarList">
                     <li className="leftbarListItem">
                         <RssFeed className="leftbarIcon"/>
-                        <span className="leftbarListItemText">Feed</span>
+                        <span className="leftbarListItemText">Home</span>
                     </li>
                     <li className="leftbarListItem">
                         <Chat className="leftbarIcon" />
-                        <span className="leftbarListItemText">Chats</span>
+                        <span className="leftbarListItemText">Following</span>
                     </li>
                     <li className="leftbarListItem">
                         <PlayCircleFilledOutlined className="leftbarIcon" />
-                        <span className="leftbarListItemText">Videos</span>
+                        <span className="leftbarListItemText">Favorites</span>
                     </li>
                     <li className="leftbarListItem">
                         <Group className="leftbarIcon" />
-                        <span className="leftbarListItemText">Groups</span>
+                        <span className="leftbarListItemText">Settings</span>
                     </li>
                     <li className="leftbarListItem">
                         <Bookmark className="leftbarIcon" />
-                        <span className="leftbarListItemText">Bookmarks</span>
+                        <span className="leftbarListItemText">Log Out</span>
                     </li>
                     <li className="leftbarListItem">
                         <HelpOutline className="leftbarIcon" />
