@@ -42,7 +42,7 @@ export default function Rightbar({ user }) {
                         <span className="rightbarInfoValue">{user.relationship === 1 ? "Single" : user.relationship === 2 ? "Married" : "-"}</span>
                     </div>
                 </div>
-                <h4 className="rightbarTitle">User Friends</h4>
+                <h4 className="rightbarTitle">Following</h4>
                 <div className="rightbarFollowings">
                     <div className="rightbarFollowing">
                         <img src={`${PF}profiles/17.png`} alt="" className="rightbarFollowingImg" />
