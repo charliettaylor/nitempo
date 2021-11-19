@@ -1,6 +1,6 @@
 import "./profile.css"
 import Topbar from "../../components/topbar/Topbar";
-import Leftbar from "../../components/leftbar/Leftbar";
+import Leftbar from "../../components/leftbar_profile/Leftbar_profile";
 import Rightbar from "../../components/rightbar/Rightbar";
 import Feed from "../../components/feed/Feed";
 import { useState, useEffect } from 'react';
