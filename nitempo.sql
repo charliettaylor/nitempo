@@ -66,9 +66,9 @@ CREATE TABLE IF NOT EXISTS `nitempo`.`rating` (
 
 
 -- -----------------------------------------------------
--- Table `nitempo`.`friend`
+-- Table `nitempo`.`follow`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `nitempo`.`friend` (
+CREATE TABLE IF NOT EXISTS `nitempo`.`follow` (
   `followID` VARCHAR(35) NOT NULL,
   `userID` VARCHAR(35) NOT NULL,
   PRIMARY KEY (`followID`, `userID`),
