@@ -27,13 +27,9 @@ app.use('/auth', require('./routes/auth'));
 app.use('/spotify', require('./routes/spotify'));
 app.use('/post', require('./routes/post'));
 
-//app.listen(5000, () => {
-   // console.log('Server started on port 5000');
-//});
-
 const PORT = process.env.PORT || 8888;
 app.listen(PORT, () =>
   console.log(
-    `HTTP Server up. Now working on ${process.env.HEROKU_HOSTNAME}`
+    `HTTP Server up. Now working on ${process.env.HEROKU_HOSTNAME} and port ${PORT}`
   )
 );
