@@ -7,4 +7,10 @@ router.post('/create', postController.create);
 
 router.get('/get', postController.get);
 
+router.get('/getUser', postController.getUser);
+
+router.patch('/update', postController.update);
+
+router.delete('/delete', postController.delete);
+
 module.exports = router;
