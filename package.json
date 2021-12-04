@@ -23,7 +23,9 @@
     "react-router-dom": "^5.3.0",
     "spotify-web-api-node": "^5.0.2"
   },
-  "keywords": [],
+  "keywords": [
+    "Heroku"
+  ],
   "author": "Charlie Taylor",
   "license": "ISC"
 }

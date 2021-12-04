@@ -22,6 +22,24 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '../frontend/src/views'));
 app.set('public', path.join(__dirname, '../frontend/public'));
 
+// Authenticator
+app.use(function(req, res, next) {
+  console.log(req.headers.authorization);
+
+  // req : {forgot to send authorization header}
+  // res : { send an Basic Auth request (HTTP Code: 403 Error} 
+  if(!req.headers.authorization) 
+  { return res.status(403).json({ error: 'No credentials sent!' }); }
+
+  // req : { sent invalid bearer token}
+  // res : {send an Basic Auth request (HTTP Code: 401 Unauthorized} 
+  if(req.headers.authorization.split(' ')[1] != process.env.BEARER_TOKEN) 
+  { return res.status(401).json({ error: '401 Unauthorized User' }); }
+
+  // sent valid bearer token continue with processing
+  next();
+});
+
 // Define Routes
 app.use('/auth', require('./routes/auth'));
 app.use('/spotify', require('./routes/spotify'));
