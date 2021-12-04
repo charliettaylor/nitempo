@@ -114,7 +114,7 @@ exports.getMe = async (req, res) => {
         .catch((error) => {
             console.log("Error: " + error.message);
             res.json({ error: error });
-        });
+    });
 }
 
 // req : { userID: string }
