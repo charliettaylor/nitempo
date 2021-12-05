@@ -9,4 +9,8 @@ router.get('/spotifyLogin', apiController.login);
 
 router.get('/callback', apiController.callback);
 
+router.get('/followerCount', authController.getFollowerCount);
+
+router.get('/followingCount', authController.getFollowingCount);
+
 module.exports = router;

@@ -23,7 +23,7 @@ exports.getUserById = (req, res) => {
 
 // { userID : string }
 exports.getUserInfo = async (req, res, next) => {
-    db.query('SELECT * FROM user WHERE userID = ?', [req.body.userID],
+    db.query('SELECT * FROM user WHERE userID = ?', [req.body['userID']],
     (error, result) => {
         if (!result) {
             return next();
@@ -33,4 +33,30 @@ exports.getUserInfo = async (req, res, next) => {
         req.body = { ...req.body, ...result[0] };
         return next();
     });
+}
+
+exports.getFollowerCount = async (req, res) => {
+    db.query('SELECT SUM(userID) AS count FROM follow WHERE followID = ?', [req.body['userID']]),
+    (error, result) => {
+        if (error){
+            console.log(error);
+            res.status(400).send({error: error});
+        }
+
+        result = result.map(v => Object.assign({}, v));
+        res.status(200).send({ result: result[0] });
+    }
+}
+
+exports.getFollowingCount = async (req, res) => {
+    db.query('SELECT SUM(userID) AS count FROM follow WHERE userID = ?', [req.body['userID']]),
+    (error, result) => {
+        if (error){
+            console.log(error);
+            res.status(400).send({error: error});
+        }
+
+        result = result.map(v => Object.assign({}, v));
+        res.status(200).send({ result: result[0] });
+    }
 }

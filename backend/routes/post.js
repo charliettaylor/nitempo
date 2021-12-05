@@ -13,4 +13,6 @@ router.patch('/update', postController.update);
 
 router.delete('/delete', postController.delete);
 
+router.get('/feed', postController.getFeed);
+
 module.exports = router;
