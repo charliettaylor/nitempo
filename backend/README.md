@@ -1,7 +1,7 @@
 # Routes
 
 ## Auth
-- GET - /- GETUserById `{ userID: string }`
+- GET - /getUserById `{ userID: string }`
 
 - GET - /spotifyLogin `{}`
 
@@ -14,9 +14,9 @@
 ## Post
 - POST - /create `{ userID: string, description: string, type: string, musicID: string }`
 
-- GET - /- GET `{}`
+- GET - /get `{}`
 
-- GET - /- GETUser `{ userID: string }`
+- GET - /getUser `{ userID: string }`
 
 - PATCH - /update `{ userID: string, desc: string }`
 
@@ -25,9 +25,9 @@
 - GET - /feed `{ userID: string }`
 
 ## Spotify
-- GET - /- GETMe `{ userID: string }`
+- GET - /getMe `{ userID: string }`
 
-- GET - /- GETPlaylists `{ userID: string }`
+- GET - /getPlaylists `{ userID: string }`
 
 - GET - /refreshTokens `{ userID : string }`
 
