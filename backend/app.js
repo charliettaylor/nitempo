@@ -28,8 +28,11 @@ app.set('public', path.join(__dirname, '../frontend/public'));
 app.use(function(req, res, next) {
   console.log(req.headers.authorization);
 
-  // req : {forgot to send authorization header}
-  // res : { send an Basic Auth request (HTTP Code: 403 Error} 
+  if (req.originalUrl === '/auth/callback')
+  { return next(); }
+
+  // req : { forgot to send authorization header }
+  // res : { send an Basic Auth request (HTTP Code: 403 Error }
   if(!req.headers.authorization) 
   { return res.status(403).json({ error: 'No credentials sent!' }); }
 
