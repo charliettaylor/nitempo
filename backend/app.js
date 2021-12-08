@@ -9,7 +9,13 @@ const cors = require('cors');
 
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  methods: ['POST', 'GET', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['*'],
+  credentials: true,
+}
+app.use(cors(corsOptions));
 
 const publicDirectory = path.join(__dirname, '../frontend/public');
 app.use(express.static(publicDirectory));
