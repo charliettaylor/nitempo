@@ -24,17 +24,26 @@ app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, '../frontend/src/views'));
 app.set('public', path.join(__dirname, '../frontend/public'));
 
-// Authenticator
-app.use(function(req, res, next) {
-  console.log(req.headers.authorization);
+const unless = (path, middleware) => {
+  return (req, res, next) => {
+    if (path === req.path) {
+        return next();
+    } else {
+        return middleware(req, res, next);
+    }
+  };
+};
 
-  if (req.originalUrl === '/auth/callback')
-  { return next(); }
+const bearerCheck = (req, res, next) => {
+  console.log(req.headers.authorization);
 
   // req : { forgot to send authorization header }
   // res : { send an Basic Auth request (HTTP Code: 403 Error }
   if(!req.headers.authorization) 
-  { return res.status(403).json({ error: 'No credentials sent!' }); }
+  { 
+    console.log(req.originalUrl);
+    return res.status(403).json({ error: 'No credentials sent!' });
+  }
 
   // req : { sent invalid bearer token}
   // res : {send an Basic Auth request (HTTP Code: 401 Unauthorized} 
@@ -43,7 +52,10 @@ app.use(function(req, res, next) {
 
   // sent valid bearer token continue with processing
   next();
-});
+}
+
+// Authenticator
+app.use(unless('/auth/callback', bearerCheck));
 
 // Define Routes
 app.use('/auth', require('./routes/auth'));
