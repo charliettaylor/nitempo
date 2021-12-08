@@ -5,9 +5,11 @@ const path = require('path');
 var db = require('./controllers/db');
 const cookieParser = require('cookie-parser');
 const api = require('./controllers/spotifyApi');
+const cors = require('cors');
 
 
 const app = express();
+app.use(cors());
 
 const publicDirectory = path.join(__dirname, '../frontend/public');
 app.use(express.static(publicDirectory));
@@ -33,7 +35,7 @@ app.use(function(req, res, next) {
 
   // req : { sent invalid bearer token}
   // res : {send an Basic Auth request (HTTP Code: 401 Unauthorized} 
-  if(req.headers.authorization.split(' ')[1] != process.env.BEARER_TOKEN) 
+  if(req.headers.authorization.split(' ')[1] != process.env.BEARER_TOKEN)
   { return res.status(401).json({ error: '401 Unauthorized User' }); }
 
   // sent valid bearer token continue with processing
@@ -44,6 +46,15 @@ app.use(function(req, res, next) {
 app.use('/auth', require('./routes/auth'));
 app.use('/spotify', require('./routes/spotify'));
 app.use('/post', require('./routes/post'));
+
+// Error handling
+app.use((req, res, next) => {
+  const error = new Error('not found');
+
+  return res.status(404).json({
+      message: error.message
+  });
+});
 
 const PORT = process.env.PORT || 8888;
 app.listen(PORT, () =>

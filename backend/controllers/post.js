@@ -36,7 +36,7 @@ exports.update = (req, res) => {
     });
 }
 
-// req : { userID: string }
+// req : { postID: string }
 // res : { message: string }
 exports.delete = (req, res) => {
     db.query('DELETE FROM post WHERE postID = ?' [req.body['userID']],
