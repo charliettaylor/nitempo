@@ -26,7 +26,7 @@ app.set('public', path.join(__dirname, '../frontend/public'));
 
 const unless = (path, middleware) => {
   return (req, res, next) => {
-    if (path === req.path) {
+    if (req.path.includes(path)) {
         return next();
     } else {
         return middleware(req, res, next);
@@ -55,7 +55,7 @@ const bearerCheck = (req, res, next) => {
 }
 
 // Authenticator
-app.use(unless('/auth/callback', bearerCheck));
+app.use(unless('callback', bearerCheck));
 
 // Define Routes
 app.use('/auth', require('./routes/auth'));

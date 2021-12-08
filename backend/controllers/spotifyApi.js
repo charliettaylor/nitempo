@@ -94,6 +94,7 @@ exports.callback = async (req, res) => {
                     }
                 });
             }
+            res.redirect(200, `http://localhost:${ process.env.PORT || '8888' }}`);
         })
         .catch(error => {
             console.error('Error getting Tokens:', error);
