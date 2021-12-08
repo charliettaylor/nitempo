@@ -5,6 +5,9 @@ import Rightbar from "../../components/rightbar/Rightbar";
 import Feed from "../../components/feed/Feed";
 import React from "react";
 
+const code = new URLSearchParams(window.location.search).get('code')
+
+
 export default function Home() {
     return (
         <React.Fragment>
@@ -14,6 +17,7 @@ export default function Home() {
             <Feed/>
             <Rightbar/>
             </div>
+            This is your spotify code: {code}
         </React.Fragment>
     )
 }
