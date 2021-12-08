@@ -16,7 +16,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={code? <Home/> : <SpotifyLogin/>}>
+        <Route exact path="/" element={code? <Home code={code}/> : <SpotifyLogin/>}>
         </Route>
         <Route exact path="/login" element={<Login/>}>
         </Route>
