@@ -7,7 +7,8 @@ import SpotifyLogin from "./pages/spotifyLogin/SpotifyLogin";
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  Navigate
 } from "react-router-dom";
 
 const code = new URLSearchParams(window.location.search).get('code')
@@ -16,7 +17,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={code? <Home code={code}/> : <SpotifyLogin/>}>
+        <Route exact path="/spotifyLogin" element={code ? <Navigate to="/" /> : <SpotifyLogin/>}>
+        </Route>
+        <Route exact path="/" element={<Home code={code}/>}>
         </Route>
         <Route exact path="/login" element={<Login/>}>
         </Route>

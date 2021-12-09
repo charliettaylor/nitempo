@@ -94,7 +94,9 @@ exports.callback = async (req, res) => {
                     }
                 });
             }
-            res.redirect(200, `http://localhost:${ process.env.PORT || '3000' }}`);
+            res.redirect(200, `http://localhost:3000`).json({ 
+                accessToken: accessToken
+            });
         })
         .catch(error => {
             console.error('Error getting Tokens:', error);

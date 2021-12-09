@@ -6,18 +6,18 @@ import Feed from "../../components/feed/Feed";
 import React from "react";
 
 const code = new URLSearchParams(window.location.search).get('code')
-
+console.log({code})
 
 export default function Home() {
     return (
-        <React.Fragment>
-            <Topbar/>
+        <>
+            <Topbar code={code}/>
             <div className="homeContainer">
             <Leftbar/>
             <Feed/>
             <Rightbar/>
             </div>
-            This is your spotify code: {code}
-        </React.Fragment>
+            This is code your spotify code: {code}
+        </>
     )
 }
