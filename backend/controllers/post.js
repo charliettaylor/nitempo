@@ -89,9 +89,7 @@ exports.getUser = (req, res) => {
     });
 }
 
-var query = 'SELECT postID, description, post_time, type, musicID, post.userID\
-FROM post JOIN follow ON post.userID = follow.followID\
-WHERE follow.userID = ? ORDER BY post_time DESC';
+var query = 'SELECT postID, description, post_time, type, musicID, post.userID FROM post JOIN follow ON post.userID = follow.followID WHERE follow.userID = ? ORDER BY post_time DESC';
 
 exports.getFeed = (req, res) => {
     db.query(query, [req.body['userID']],
