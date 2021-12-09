@@ -94,7 +94,7 @@ exports.callback = async (req, res) => {
                     }
                 });
             }
-            res.redirect(200, `http://localhost:3000/`);
+            res.redirect(200, `http://localhost:3000/?code=${code}`);
             return;
         })
         .catch(error => {
