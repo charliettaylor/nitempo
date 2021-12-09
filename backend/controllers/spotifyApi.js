@@ -87,8 +87,7 @@ exports.callback = async (req, res) => {
                 db.query("UPDATE user SET accessToken = ?, refreshToken = ? WHERE userId = ?", [accessToken, refreshToken, data.body['id']]);
                 console.log(data.body['id'] + ' tokens updated');
             } else {
-                db.query('INSERT INTO user SET ?',
-                { userID: data.body["id"], email: data.body["email"], accessToken: accessToken, refreshToken: refreshToken },
+                db.query('INSERT INTO user VALUES (?)', [[data.body["id"], data.body["email"], accessToken, refreshToken]],
                 (error, result) => {
                     if(error){
                         console.log(error);
