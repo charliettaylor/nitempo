@@ -55,9 +55,7 @@ exports.callback = async (req, res) => {
     spotifyApi
         .authorizationCodeGrant(code)
         .then(data  => {
-        const access_token = data.body['access_token'];
-        const refresh_token = data.body['refresh_token'];
-        const expires_in = data.body['expires_in'];
+        const { access_token, refresh_token, expires_in } = data.body;
     
         spotifyApi.setAccessToken(access_token);
         spotifyApi.setRefreshToken(refresh_token);
@@ -71,30 +69,18 @@ exports.callback = async (req, res) => {
         .then(data => {
             var accessToken = spotifyApi.getAccessToken();
             var refreshToken = spotifyApi.getRefreshToken();
-            var result = db.query('SELECT DISTINCT * FROM user WHERE userID = ?', [data.body['id']],
+
+            let { id, email } = data.body;
+
+            db.query('INSERT INTO user (userID, email, accessToken, refreshToken) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE accessToken = ?, refreshToken = ?;', [id, email, accessToken, refreshToken, accessToken, refreshToken],
             (error, result) => {
                 if(error){
-                    console.log("Error: " + error);
-                    return [];
+                    console.log(error);
+                } else {
+                    console.log(result);
                 }
-                return result;
             });
-
-            if(result){
-                db.query("UPDATE user SET accessToken = ?, refreshToken = ? WHERE userId = ?", [accessToken, refreshToken, data.body['id']]);
-                console.log(data.body['id'] + ' tokens updated');
-            } else {
-                db.query('INSERT INTO user SET ?',
-                { userID: data.body["id"], email: data.body["email"], accessToken: accessToken, refreshToken: refreshToken },
-                (error, result) => {
-                    if(error){
-                        console.log(error);
-                    } else {
-                        console.log(result);
-                    }
-                });
-            }
-            res.redirect(200, `http://localhost:3000/?username=${data.body["id"]}`);
+            res.redirect(200, `http://localhost:3000/?username=${id}`);
             return;
         })
         .catch(error => {

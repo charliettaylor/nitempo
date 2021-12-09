@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.post('/getUserById', authController.getUserById);
 
-router.post('/spotifyLogin', apiController.login);
+router.get('/spotifyLogin', apiController.login);
 
-router.post('/callback', apiController.callback);
+router.get('/callback', apiController.callback);
 
 router.post('/followerCount', authController.getFollowerCount);
 

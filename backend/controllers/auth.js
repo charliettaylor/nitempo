@@ -7,14 +7,13 @@ const { promisify } = require('util');
 // { userID : string }
 exports.getUserById = (req, res) => {
     try{
-        console.log(req.body.userID);
-        db.query('SELECT * FROM user WHERE userID = ?', [req.body.userID],
+        db.query('SELECT * FROM user WHERE userID = ?', [req.body["userID"]],
         (error, result) => {
             if (!result) {
                 res.status(400).json({ message: 'No user with specified ID' });
             }
-            //res.send({"message" : "worked"});
-            res.status(200).send(result[0]);
+            
+            res.status(200).json({result: result[0]});
         });
     } catch(error) {
         console.log(error);
