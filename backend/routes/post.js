@@ -5,14 +5,14 @@ const router = express.Router();
 
 router.post('/create', postController.create);
 
-router.get('/get', postController.get);
+router.post('/get', postController.get);
 
-router.get('/getUser', postController.getUser);
+router.post('/getUser', postController.getUser);
 
 router.patch('/update', postController.update);
 
 router.delete('/delete', postController.delete);
 
-router.get('/feed', postController.getFeed);
+router.post('/feed', postController.getFeed);
 
 module.exports = router;

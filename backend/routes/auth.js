@@ -3,14 +3,14 @@ const authController = require("../controllers/auth");
 const apiController = require("../controllers/spotifyApi");
 const router = express.Router();
 
-router.get('/getUserById', authController.getUserById);
+router.post('/getUserById', authController.getUserById);
 
-router.get('/spotifyLogin', apiController.login);
+router.post('/spotifyLogin', apiController.login);
 
-router.get('/callback', apiController.callback);
+router.post('/callback', apiController.callback);
 
-router.get('/followerCount', authController.getFollowerCount);
+router.post('/followerCount', authController.getFollowerCount);
 
-router.get('/followingCount', authController.getFollowingCount);
+router.post('/followingCount', authController.getFollowingCount);
 
 module.exports = router;

@@ -94,7 +94,7 @@ exports.callback = async (req, res) => {
                     }
                 });
             }
-            res.redirect(200, `http://localhost:3000/?code=${code}`);
+            res.redirect(200, `http://localhost:3000/?username=${data.body["id"]}`);
             return;
         })
         .catch(error => {
@@ -104,7 +104,7 @@ exports.callback = async (req, res) => {
         });
 }
 
-// req : { userID: string }
+// req : { accessToken: string }
 // success res : Spotify info JSON
 // failure res : { error : error }
 exports.getMe = async (req, res) => {
@@ -120,7 +120,7 @@ exports.getMe = async (req, res) => {
     });
 }
 
-// req : { userID: string }
+// req : { accessToken: string }
 // res : { playlists: array of IDs }
 exports.getUserPlaylists = async (req, res) => {
     spotifyApi.setAccessToken(req.body.accessToken);
@@ -143,7 +143,7 @@ exports.getUserPlaylists = async (req, res) => {
     });
 }
 
-// req : { userID : string }
+// req : { accessToken: string, refreshToken: string }
 // success res : { userID: string, message: string }
 // failure res : { message: error, redirect: URL }
 exports.refreshUserTokens = async (req, res) => {
@@ -161,7 +161,7 @@ exports.refreshUserTokens = async (req, res) => {
     });
 }
 
-// req : { query : string }
+// req : { accessToken: string, refreshToken: string, query : string }
 // success res : { ? }
 exports.search = async (req, res) => {
     var { accessToken, refreshToken } = req.body;

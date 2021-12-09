@@ -4,12 +4,12 @@ const authController = require('../controllers/auth');
 const router = express.Router();
 
 // getUserInfo middleware queries db for user data to set access token of spotify api
-router.get('/getMe', authController.getUserInfo, apiController.getMe);
+router.post('/getMe', authController.getUserInfo, apiController.getMe);
 
-router.get('/getPlaylists', authController.getUserInfo, apiController.getUserPlaylists);
+router.post('/getPlaylists', authController.getUserInfo, apiController.getUserPlaylists);
 
-router.get('/refreshTokens', authController.getUserInfo, apiController.refreshUserTokens);
+router.post('/refreshTokens', authController.getUserInfo, apiController.refreshUserTokens);
 
-router.get('/search', authController.getUserInfo, apiController.search);
+router.post('/search', authController.getUserInfo, apiController.search);
 
 module.exports = router;
