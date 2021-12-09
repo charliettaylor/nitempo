@@ -19,7 +19,7 @@ export default function Home({code}) {
             <Feed/>
             <Rightbar/>
             </div>
-            This is code your spotify code: {code}
+            This is your spotify code: {code}
         </>
     )
 }
