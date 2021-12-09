@@ -72,7 +72,7 @@ exports.callback = async (req, res) => {
 
             let { id, email } = data.body;
 
-            db.query(`INSERT INTO user VALUES (${id}, ${email}, ${accessToken}, ${refreshToken})
+            db.query(`INSERT INTO user (userID, email, accessToken, refreshToken) VALUES (${id}, ${email}, ${accessToken}, ${refreshToken})
             ON DUPLICATE KEY UPDATE accessToken = ${accessToken}, refreshToken = ${refreshToken};`,
             (error, result) => {
                 if(error){
