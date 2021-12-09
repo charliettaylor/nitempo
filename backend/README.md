@@ -1,20 +1,20 @@
 # Routes
 
 ## Auth
-- GET - /getUserById `{ userID: string }`
+- POST - /getUserById `{ userID: string }`
 
-- GET - /spotifyLogin `{}`
+- POST - /spotifyLogin `{}`
 
-- GET - /callback for Spotify API only
+- POST - /callback for Spotify API ***only***
 
-- GET - /followerCount `{ userID: string }`
+- POST - /followerCount `{ userID: string }`
 
-- GET - /followingCount `{ userID: string }`
+- POST - /followingCount `{ userID: string }`
 
 ## Post
 - POST - /create `{ userID: string, description: string, type: string, musicID: string }`
 
-- GET - /get `{}`
+- POST - /get `{}`
 
 - GET - /getUser `{ userID: string }`
 
@@ -22,13 +22,13 @@
 
 - DELETE - /delete `{ postID: string }`
 
-- GET - /feed `{ userID: string }`
+- POST - /feed `{ userID: string }`
 
 ## Spotify
-- GET - /getMe `{ userID: string }`
+- POST - /getMe `{ accessToken: string }`
 
-- GET - /getPlaylists `{ userID: string }`
+- POST - /getPlaylists `{ accessToken: string, refreshToken: string }`
 
-- GET - /refreshTokens `{ userID : string }`
+- POST - /refreshTokens `{ accessToken: string, refreshToken: string }`
 
-- GET - /search `{ query : string }`
+- POST - /search `{ accessToken: string, refreshToken: string, query : string }`
