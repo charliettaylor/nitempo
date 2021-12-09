@@ -80,6 +80,9 @@ exports.callback = async (req, res) => {
                 return result;
             });
 
+            console.log("Result from database:");
+            console.log(result);
+
             if(result){
                 db.query("UPDATE user SET accessToken = ?, refreshToken = ? WHERE userId = ?", [accessToken, refreshToken, data.body['id']]);
                 console.log(data.body['id'] + ' tokens updated');

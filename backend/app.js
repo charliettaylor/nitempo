@@ -41,8 +41,6 @@ const unless = (path, middleware) => {
 };
 
 const bearerCheck = (req, res, next) => {
-  console.log(req.headers.authorization);
-
   // req : { forgot to send authorization header }
   // res : { send an Basic Auth request (HTTP Code: 403 Error }
   if(!req.headers.authorization) 
