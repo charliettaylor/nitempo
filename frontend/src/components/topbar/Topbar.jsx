@@ -3,7 +3,7 @@ import { Search, Person, Chat, Notifications } from "@material-ui/icons"
 import { Link } from "react-router-dom"
 import React from "react";
 
-export default function Topbar() {
+export default function Topbar({code}) {
     return (
         <div className="topbarContainer">
             <div className="topbarLeft">

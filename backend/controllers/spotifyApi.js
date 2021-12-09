@@ -94,14 +94,8 @@ exports.callback = async (req, res) => {
                     }
                 });
             }
-<<<<<<< HEAD
-            res.redirect(200, `http://localhost:3000`).json({ 
-                accessToken: accessToken
-            });
-=======
             res.redirect(200, `http://localhost:3000/?code=${code}`);
             return;
->>>>>>> 8bc1a915a2aef8a79994fc634f1bd7325d4e9c23
         })
         .catch(error => {
             console.error('Error getting Tokens:', error);
