@@ -4,22 +4,16 @@ import Leftbar from "../../components/leftbar/Leftbar";
 import Rightbar from "../../components/rightbar/Rightbar";
 import Feed from "../../components/feed/Feed";
 import React from "react";
-import useAuth from "../../useAuth"
 
-const code = new URLSearchParams(window.location.search).get('code')
-console.log({code})
-
-export default function Home({code}) {
-    const accessToken = useAuth(code)
+export default function Home({code, userId}) {
     return (
         <>
-            <Topbar code={code}/>
+            <Topbar code={code, userId}/>
             <div className="homeContainer">
-            <Leftbar/>
-            <Feed/>
-            <Rightbar/>
+            <Leftbar code={code, userId}/>
+            <Feed code={code, userId}/>
+            <Rightbar code={code, userId}/>
             </div>
-            This is your spotify code: {code}
         </>
     )
 }
