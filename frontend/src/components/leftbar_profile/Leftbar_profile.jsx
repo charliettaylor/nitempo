@@ -9,6 +9,7 @@ import {RssFeed,  Chat,
   School,} from "@material-ui/icons"  
 import { Users } from "../../dummyData"
 import CloseFriend from "../closeFriend/CloseFriend"
+import React from "react";
 
 export default function leftbar_profile() {
     return (
