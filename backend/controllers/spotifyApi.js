@@ -55,9 +55,7 @@ exports.callback = async (req, res) => {
     spotifyApi
         .authorizationCodeGrant(code)
         .then(data  => {
-        const access_token = data.body['access_token'];
-        const refresh_token = data.body['refresh_token'];
-        const expires_in = data.body['expires_in'];
+        const { access_token, refresh_token, expires_in } = data.body;
     
         spotifyApi.setAccessToken(access_token);
         spotifyApi.setRefreshToken(refresh_token);
@@ -71,37 +69,28 @@ exports.callback = async (req, res) => {
         .then(data => {
             var accessToken = spotifyApi.getAccessToken();
             var refreshToken = spotifyApi.getRefreshToken();
-            var result = db.query('SELECT DISTINCT * FROM user WHERE userID = ?', [data.body['id']],
+
+            let { id, email } = data.body;
+
+            db.query('INSERT INTO user (userID, email, accessToken, refreshToken) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE accessToken = ?, refreshToken = ?;', [id, email, accessToken, refreshToken, accessToken, refreshToken],
             (error, result) => {
                 if(error){
-                    console.log("Error: " + error);
-                    return [];
+                    console.log(error);
+                } else {
+                    console.log(result);
                 }
-                return result;
             });
-
-            if(result){
-                db.query("UPDATE user SET accessToken = ?, refreshToken = ? WHERE userId = ?", [accessToken, refreshToken, data.body['id']]);
-                console.log(data.body['id'] + ' tokens updated');
-            } else {
-                db.query('INSERT INTO user SET ?',
-                { userID: data.body["id"], email: data.body["email"], accessToken: accessToken, refreshToken: refreshToken },
-                (error, result) => {
-                    if(error){
-                        console.log(error);
-                    } else {
-                        console.log(result);
-                    }
-                });
-            }
+            res.redirect(200, `http://localhost:3000/?username=${id}`);
+            return;
         })
         .catch(error => {
             console.error('Error getting Tokens:', error);
             res.send(`Error getting Tokens: ${error}`);
+            return;
         });
 }
 
-// req : { userID: string }
+// req : { accessToken: string }
 // success res : Spotify info JSON
 // failure res : { error : error }
 exports.getMe = async (req, res) => {
@@ -114,10 +103,10 @@ exports.getMe = async (req, res) => {
         .catch((error) => {
             console.log("Error: " + error.message);
             res.json({ error: error });
-        });
+    });
 }
 
-// req : { userID: string }
+// req : { accessToken: string }
 // res : { playlists: array of IDs }
 exports.getUserPlaylists = async (req, res) => {
     spotifyApi.setAccessToken(req.body.accessToken);
@@ -140,7 +129,7 @@ exports.getUserPlaylists = async (req, res) => {
     });
 }
 
-// req : { userID : string }
+// req : { accessToken: string, refreshToken: string }
 // success res : { userID: string, message: string }
 // failure res : { message: error, redirect: URL }
 exports.refreshUserTokens = async (req, res) => {
@@ -158,7 +147,7 @@ exports.refreshUserTokens = async (req, res) => {
     });
 }
 
-// req : { query : string }
+// req : { accessToken: string, refreshToken: string, query : string }
 // success res : { ? }
 exports.search = async (req, res) => {
     var { accessToken, refreshToken } = req.body;

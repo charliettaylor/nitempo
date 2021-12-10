@@ -1,5 +1,8 @@
 import React from "react";
 import "./leftbar.css";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import SpotifyWebApi from "spotify-web-api-node"
 import {RssFeed,  Chat,
   PlayCircleFilledOutlined,
   Group,
@@ -11,49 +14,48 @@ import {RssFeed,  Chat,
 import { Users } from "../../dummyData"
 import CloseFriend from "../closeFriend/CloseFriend"
 
-export default function Leftbar() {
+const userId = new URLSearchParams(window.location.search).get('username')
+
+const spotifyApi = new SpotifyWebApi({
+  clientId: "dace8b06faeb4ce09cde9f32c8f55de9",
+})
+
+export default function Leftbar({user, code}) {
+    const [playlist0, setPlaylist0] = useState();
+    const [playlist1, setPlaylist1] = useState();
+    const [playlist2, setPlaylist2] = useState();
+    const [playlist3, setPlaylist3] = useState();
+    const [playlist4, setPlaylist4] = useState();
+    const [playlist5, setPlaylist5] = useState();
+    const [data, setData] = useState();
+
+    useEffect(() => {
+        axios.post("https://nitempo.herokuapp.com/spotify/getPlaylists", {
+        userID: userId
+        })
+        .then(res => {
+        setPlaylist0(res.data.playlists[0])
+        setPlaylist1(res.data.playlists[1])
+        setPlaylist2(res.data.playlists[2])
+        setPlaylist3(res.data.playlists[3])
+        setPlaylist4(res.data.playlists[4])
+        setPlaylist5(res.data.playlists[5])
+
+        })
+        .catch((e) => {
+        console.log(e)
+        })
+    })
+
     return (
         <div className="leftbar">
             <div className="leftbarWrapper">
-                <ul className="leftbarList">
-                    <li className="leftbarListItem">
-                        <RssFeed className="leftbarIcon"/>
-                        <span className="leftbarListItemText">Feed</span>
-                    </li>
-                    <li className="leftbarListItem">
-                        <Chat className="leftbarIcon" />
-                        <span className="leftbarListItemText">Chats</span>
-                    </li>
-                    <li className="leftbarListItem">
-                        <PlayCircleFilledOutlined className="leftbarIcon" />
-                        <span className="leftbarListItemText">Videos</span>
-                    </li>
-                    <li className="leftbarListItem">
-                        <Group className="leftbarIcon" />
-                        <span className="leftbarListItemText">Groups</span>
-                    </li>
-                    <li className="leftbarListItem">
-                        <Bookmark className="leftbarIcon" />
-                        <span className="leftbarListItemText">Bookmarks</span>
-                    </li>
-                    <li className="leftbarListItem">
-                        <HelpOutline className="leftbarIcon" />
-                        <span className="leftbarListItemText">Questions</span>
-                    </li>
-                    <li className="leftbarListItem">
-                        <WorkOutline className="leftbarIcon" />
-                        <span className="leftbarListItemText">Jobs</span>
-                    </li>
-                    <li className="leftbarListItem">
-                        <Event className="leftbarIcon" />
-                        <span className="leftbarListItemText">Events</span>
-                    </li>
-                    <li className="leftbarListItem">
-                        <School className="leftbarIcon" />
-                        <span className="leftbarListItemText">Courses</span>
-                    </li>
-                </ul>
-                <button className="leftbarButton">Show More</button>
+                <iframe src={"https://open.spotify.com/embed/playlist/"+playlist0+"?utm_source=generator"} width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                <iframe src={"https://open.spotify.com/embed/playlist/"+playlist1+"?utm_source=generator"} width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                <iframe src={"https://open.spotify.com/embed/playlist/"+playlist2+"?utm_source=generator"} width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                <iframe src={"https://open.spotify.com/embed/playlist/"+playlist3+"?utm_source=generator"} width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                <iframe src={"https://open.spotify.com/embed/playlist/"+playlist4+"?utm_source=generator"} width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                <iframe src={"https://open.spotify.com/embed/playlist/"+playlist5+"?utm_source=generator"} width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                 <hr className="leftbarHr"/>
                 <ul className="leftbarFriendList">
                     {Users.map((u) => (

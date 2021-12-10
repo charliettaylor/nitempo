@@ -18,7 +18,7 @@ export default function leftbar_profile() {
                 <ul className="leftbarList">
                     <li className="leftbarListItem">
                         <RssFeed className="leftbarIcon"/>
-                        <span className="leftbarListItemText">HOME</span>
+                        <span className="leftbarListItemText">Home</span>
                     </li>
                     <li className="leftbarListItem">
                         <Chat className="leftbarIcon" />

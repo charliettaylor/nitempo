@@ -57,7 +57,9 @@
   flex: 4;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  padding-left: 400px;
+  margin-left: 200px;
+  justify-content: space-evenly;
   color: white;
 }
 
@@ -67,12 +69,29 @@
   cursor: pointer;
 }
 
+a:visited {
+  color: #669EA5;
+}
+
 .topbarIcons {
   display: flex;
 }
 
 .topbarIconItem {
-  margin-right: 15px;
+  transform: scale(1.4);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-top: 2px;
+  position: relative;
+}
+
+.topbarIconItemAlbum {
+  transform: scale(1.8);
+  display: flex;
+  padding-top: 3px;
+  align-items: center;
+  margin-right: 40px;
   cursor: pointer;
   position: relative;
 }

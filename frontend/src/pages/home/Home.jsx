@@ -5,15 +5,15 @@ import Rightbar from "../../components/rightbar/Rightbar";
 import Feed from "../../components/feed/Feed";
 import React from "react";
 
-export default function Home() {
+export default function Home({code, userId}) {
     return (
-        <React.Fragment>
-            <Topbar/>
+        <>
+            <Topbar code={code, userId}/>
             <div className="homeContainer">
-            <Leftbar/>
-            <Feed/>
-            <Rightbar/>
+            <Leftbar code={code, userId}/>
+            <Feed code={code, userId}/>
+            <Rightbar code={code, userId}/>
             </div>
-        </React.Fragment>
+        </>
     )
 }
