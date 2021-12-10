@@ -7,8 +7,8 @@ const db = require('./db');
 // res : { message : success/error }
 exports.create = (req, res) => {
     let date_time = new Date().toUTCString();
-    db.query('INSERT INTO post VALUES (0, ?, ?, ?, ?, ?)',
-    [req.body['description'], date_time, req.body['type'], req.body['musicID'], req.body['userID']],
+    db.query('INSERT INTO post VALUES (0, ?, ?, ?, ?, ?, ?, ?)',
+    [req.body['description'], 0, '', date_time, req.body['type'], req.body['musicID'], req.body['userID']],
     (error, result) => {
         if(error){
             console.log(error);
@@ -89,9 +89,7 @@ exports.getUser = (req, res) => {
     });
 }
 
-var query = 'SELECT postID, description, post_time, type, musicID, post.userID\
-FROM post JOIN follow ON post.userID = follow.followID\
-WHERE follow.userID = ? ORDER BY post_time DESC';
+var query = 'SELECT postID, description, post_time, type, musicID, post.userID FROM post JOIN follow ON post.userID = follow.followID WHERE follow.userID = ? ORDER BY post_time DESC';
 
 exports.getFeed = (req, res) => {
     db.query(query, [req.body['userID']],

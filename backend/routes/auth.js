@@ -13,4 +13,8 @@ router.post('/followerCount', authController.getFollowerCount);
 
 router.post('/followingCount', authController.getFollowingCount);
 
+router.post('/follow', authController.follow);
+
+router.post('/unfollow', authController.unfollow);
+
 module.exports = router;
