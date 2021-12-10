@@ -59,3 +59,29 @@ exports.getFollowingCount = async (req, res) => {
         res.status(200).send({ result: result[0] });
     }
 }
+
+exports.follow = async (req, res) => {
+    db.query('INSERT INTO follow VALUES (?)', [[req.body['followID'], req.body['userID']]], [req.body['userID']]),
+    (error, result) => {
+        if (error){
+            console.log(error);
+            res.status(400).send({error: error});
+        }
+
+        result = result.map(v => Object.assign({}, v));
+        res.status(200).send({ result: result[0] });
+    }
+}
+
+exports.unfollow = async (req, res) => {
+    db.query('DELETE FROM follow WHERE userID = ? AND followID = ?', [req.body['userID'], req.body['followID']], [req.body['userID']]),
+    (error, result) => {
+        if (error){
+            console.log(error);
+            res.status(400).send({error: error});
+        }
+
+        result = result.map(v => Object.assign({}, v));
+        res.status(200).send({ result: result[0] });
+    }
+}
