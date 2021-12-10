@@ -7,6 +7,7 @@ import React from "react";
 import SpotifyWebApi from "spotify-web-api-node"
 import TrackSearchResult from "../trackSearchResults/TrackSearchResults"
 import Player from "../../components/player/Player"
+import axios from "axios"
 
 const spotifyApi = new SpotifyWebApi({
     clientId: "dace8b06faeb4ce09cde9f32c8f55de9",
@@ -25,15 +26,15 @@ export default function Rightbar({ user, code }) {
             setSearch("")
           }
 
-        // useEffect(() => {
-        //     axios.get("http://www.secondhandgoodies.com/posts/1")
-        //     .then(res => {
-        //     console.log(res)
-        //     })
-        //     .catch((e) => {
-        //     console.log(e)
-        //     })
-        // })
+        useEffect(() => {
+            axios.get("http://www.secondhandgoodies.com/posts/1")
+            .then(res => {
+            console.log(res)
+            })
+            .catch((e) => {
+            console.log(e)
+            })
+        })
 
         useEffect(() => {
             if (!accessToken) return
