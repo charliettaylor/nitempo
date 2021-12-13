@@ -20,9 +20,12 @@ USE `nitempo` ;
 CREATE TABLE IF NOT EXISTS `nitempo`.`user` (
   `userID` VARCHAR(35) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
-  `dob` DATE NULL,
   `gender` CHAR(1) NULL,
+  `city` VARCHAR(100) NULL,
+  `relationship` VARCHAR(45) NULL,
   `bio` VARCHAR(255) NULL,
+  `profilePicture` VARCHAR(500) NULL,
+  `coverPicture` VARCHAR(500) NULL,
   `accessToken` VARCHAR(500) NULL,
   `refreshToken` VARCHAR(500) NULL,
   PRIMARY KEY (`userID`),
@@ -38,31 +41,6 @@ CREATE TABLE IF NOT EXISTS `nitempo`.`music` (
   `type` VARCHAR(10) NULL,
   `musicListed_time` DATETIME NULL,
   PRIMARY KEY (`musicID`));
-
-
--- -----------------------------------------------------
--- Table `nitempo`.`rating`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `nitempo`.`rating` (
-  `ratingID` INT NOT NULL AUTO_INCREMENT,
-  `starRating` INT NOT NULL,
-  `review` VARCHAR(255) NOT NULL,
-  `rating_time` DATETIME NULL,
-  `musicID` VARCHAR(25) NOT NULL,
-  `userID` VARCHAR(35) NOT NULL,
-  PRIMARY KEY (`ratingID`, `musicID`, `userID`),
-  INDEX `fk_rating_song1_idx` (`musicID` ASC) VISIBLE,
-  INDEX `fk_rating_user1_idx` (`userID` ASC) VISIBLE,
-  CONSTRAINT `fk_rating_song1`
-    FOREIGN KEY (`musicID`)
-    REFERENCES `nitempo`.`music` (`musicID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_rating_user1`
-    FOREIGN KEY (`userID`)
-    REFERENCES `nitempo`.`user` (`userID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -87,6 +65,8 @@ CREATE TABLE IF NOT EXISTS `nitempo`.`post` (
   `postID` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(255) NOT NULL,
   `type` VARCHAR(10) NULL,
+  `likeCount` INT NULL,
+  `image` VARCHAR(500) NULL,
   `post_time` DATETIME NULL,
   `musicID` VARCHAR(25) NULL,
   `userID` VARCHAR(35) NOT NULL,
@@ -108,4 +88,3 @@ CREATE TABLE IF NOT EXISTS `nitempo`.`post` (
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-

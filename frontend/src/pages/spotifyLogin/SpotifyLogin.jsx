@@ -9,9 +9,24 @@ export default function SpotifyLogin() {
 
   return (
     <div>
-      <a href={AUTH_URL}>
-        Login with Spotify
-      </a>
+      <main>
+        <section class = "transition">
+          <div class="dashboard">
+            <div class="user">
+
+            <a href={AUTH_URL}>
+            Login with Spotify
+            </a>
+
+            </div>
+          </div>
+
+        </section>
+
+
+
+      </main>
+    
     </div>
   )
 }
