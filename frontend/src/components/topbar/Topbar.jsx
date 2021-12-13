@@ -59,7 +59,7 @@ export default function Topbar({user, code}) {
                     </div>
                 </div>
                 <a href={userLink} target="_blank">
-                  <img src={userImage} alt="" className="topbarImage" />
+                  <img src={userImage || "https://lh3.googleusercontent.com/DQj-gonAVTlhj5W7_DhBVmX-0P42rfvx8TSp1WfQeZ6iFIon6InIS8M4Nbqy7Ql5ahgEXSiRDiWD88v-bcPYIEAg3Q=w640-h400-e365-rj-sc0x00ffffff"} alt="" className="topbarImage" />
                 </a>
             </div>  
         </div>

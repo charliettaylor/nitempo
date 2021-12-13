@@ -4,6 +4,8 @@ import "./share.css";
 import {Audiotrack, PhotoLibrary, EmojiEmotions} from "@material-ui/icons"
 import useAuth from "../../useAuth";
 import SpotifyWebApi from "spotify-web-api-node"
+import { useRef } from "react";
+import axios from "axios";
 
 const userId = new URLSearchParams(window.location.search).get('username')
 
@@ -12,6 +14,24 @@ const spotifyApi = new SpotifyWebApi({
 })
 
 export default function Share({ user, code }) {
+    const message = useRef()
+    const [file, setFile] = useState(null)
+    const submitHandler = async (e) => {
+        e.preventDefault()
+        const newPost = {
+            userID: userId, 
+            message: message.current.value
+        }
+        try {
+            await axios.post("https://nitempo.herokuapp.com/post/create", newPost)
+            window.location.reload()
+        } catch (err){
+            console.log(err)
+            console.log("user: " + userId)
+            console.log("post message: " + message.current.value)
+        }
+
+    }
     const accessToken = useAuth(code)
     const [username, setUsername] = useState()
     const [userImage, setUserImage] = useState()
@@ -37,10 +57,10 @@ export default function Share({ user, code }) {
             <div className="shareWrapper">
                 <div className="shareTop">
                     <img className="shareProfileImg" src="/assets/profiles/1.png" alt="" />
-                    <input placeholder={"What's on your mind " + username +"?"} className="shareInput"/>
+                    <input placeholder={"What's on your mind " + username +"?"} className="shareInput" ref={message}/>
                 </div>
                 <hr className="shareHr"/>
-                <div className="shareBottom">
+                <form className="shareBottom" onSubmit={submitHandler}>
                     <div className="shareOptions">
                         <div className="shareOption">
                             <Audiotrack htmlColor="#3D4363" className="shareIcon"/>
@@ -56,7 +76,7 @@ export default function Share({ user, code }) {
                         </div>
                     </div>
                     <button className="shareButton">POST</button>
-                </div>
+                </form>
             </div>
         </div>
     )

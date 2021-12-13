@@ -7,13 +7,13 @@ import React from "react";
 
 export default function Home({code, userId}) {
     return (
-        <>
+        <React.Fragment>
             <Topbar code={code, userId}/>
             <div className="homeContainer">
             <Leftbar code={code, userId}/>
             <Feed code={code, userId}/>
             <Rightbar code={code, userId}/>
             </div>
-        </>
+        </React.Fragment>
     )
 }
