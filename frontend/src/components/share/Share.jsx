@@ -13,25 +13,24 @@ const spotifyApi = new SpotifyWebApi({
 })
 
 export default function Share({ user, code }) {
-    const message = useRef();
-    const [file, setFile] = useState(null);
-  
+    const message = useRef()
+    const [file, setFile] = useState(null)
     const submitHandler = async (e) => {
-      e.preventDefault();
-      const newPost = {
-        userID: userId,
-        message: message.current.value,
-      };
-      try {
-        await axios.post("https://nitempo.herokuapp.com/post/create", newPost);
-        window.location.reload();
-      } catch (err) {
-          console.log(err)
-          console.log("User: " + userId)
-          console.log("Post Message: " + message.current.value)
-      }
-    };
+        e.preventDefault()
+        const newPost = {
+            userID: userId, 
+            message: message.current.value
+        }
+        try {
+            await axios.post("https://nitempo.herokuapp.com/post/create", newPost)
+            window.location.reload()
+        } catch (err){
+            console.log(err)
+            console.log("user: " + userId)
+            console.log("post message: " + message.current.value)
+        }
 
+    }
     const accessToken = useAuth(code)
     const [username, setUsername] = useState()
     const [userImage, setUserImage] = useState()
