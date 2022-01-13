@@ -75,9 +75,9 @@ export default function Rightbar({ user, code }) {
             <React.Fragment>
                 <div className="audioContainer">
                     <img className="audioImg" src="assets/audio.png" alt="" />
-                    <span className="audioText"><h3>Discover new music!</h3></span>
+                    <span className="audioText"><h3>Buy products from secondhandgoodies!</h3></span>
                 </div>
-                <img className="rightbarAd" src="assets/ad.jpg" alt="" />
+                <img className="rightbarAd" src="assets/ad.jpg" alt="Buy Products from Secondhandgoodies!" />
                 <h4 className="rightbarTitle">Search for music</h4>
                 <div className="searchContainer">
                     <div className="searchbar">
